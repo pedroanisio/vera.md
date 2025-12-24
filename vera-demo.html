@@ -5,33 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VERA Specification RFC v0.9.2 - Rendered Demo</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
     :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --secondary: #64748b;
-      --success: #22c55e;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --info: #06b6d4;
-      --bg: #ffffff;
-      --bg-alt: #f8fafc;
-      --bg-code: #1e293b;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --theorem-bg: #eff6ff;
-      --theorem-border: #3b82f6;
-      --definition-bg: #f0fdf4;
-      --definition-border: #22c55e;
-      --example-bg: #fefce8;
-      --example-border: #eab308;
-      --proof-bg: #faf5ff;
-      --proof-border: #a855f7;
-      --admonition-note: #3b82f6;
-      --admonition-warning: #f59e0b;
-      --admonition-tip: #22c55e;
-      --admonition-important: #a855f7;
-      --admonition-caution: #ef4444;
+      --primary: #ff4d2e;
+      --primary-dark: #cf3a23;
+      --secondary: #141210;
+      --success: #1f8a4c;
+      --warning: #c27c1d;
+      --danger: #c2412d;
+      --info: #1a6b7a;
+      --bg: #fcfbf9;
+      --bg-alt: #f3f2ee;
+      --bg-code: #141210;
+      --text: #141210;
+      --text-muted: #6a665f;
+      --border: #e0ddd6;
+      --radius: 2px;
+      --theorem-bg: #fff1ec;
+      --theorem-border: #ff4d2e;
+      --definition-bg: #f0f6f3;
+      --definition-border: #1f8a4c;
+      --example-bg: #fff7e6;
+      --example-border: #c27c1d;
+      --proof-bg: #eef6f7;
+      --proof-border: #1a6b7a;
+      --admonition-note: #ff4d2e;
+      --admonition-warning: #c27c1d;
+      --admonition-tip: #1f8a4c;
+      --admonition-important: #1a6b7a;
+      --admonition-caution: #c2412d;
     }
 
     * {
@@ -39,12 +42,16 @@
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
       line-height: 1.7;
       color: var(--text);
       background: var(--bg);
       margin: 0;
       padding: 0;
+      background-image:
+        linear-gradient(to right, rgba(20, 18, 16, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(20, 18, 16, 0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
 
     .container {
@@ -55,26 +62,36 @@
 
     /* Header */
     .document-header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
+      background: var(--bg-alt);
+      color: var(--text);
       padding: 3rem 2rem;
       margin-bottom: 2rem;
-      border-radius: 12px;
+      border: 2px solid var(--text);
+      border-radius: var(--radius);
+      box-shadow: 6px 6px 0 var(--text);
     }
 
     .document-header h1 {
       margin: 0 0 0.5rem 0;
-      font-size: 2.5rem;
+      font-size: 2.75rem;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      font-family: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
     }
 
     .document-header .version {
       display: inline-block;
-      background: rgba(255,255,255,0.2);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.875rem;
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius);
+      font-size: 0.75rem;
       margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
     }
 
     .document-header .description {
@@ -87,7 +104,7 @@
     .demo-panel {
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius);
       margin: 2rem 0;
       overflow: hidden;
     }
@@ -108,12 +125,16 @@
     }
 
     .demo-panel-header .badge {
-      background: var(--primary);
-      color: white;
+      background: transparent;
+      color: var(--primary);
       padding: 0.125rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 500;
+      border-radius: var(--radius);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid var(--primary);
+      font-family: 'IBM Plex Mono', monospace;
     }
 
     .demo-content {
@@ -146,10 +167,11 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-family: 'IBM Plex Mono', monospace;
     }
 
     .demo-source-label {
-      color: #94a3b8;
+      color: #c9c2b8;
     }
 
     .demo-rendered-label {
@@ -164,20 +186,20 @@
     }
 
     .demo-source code {
-      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      font-family: 'IBM Plex Mono', 'Fira Code', 'Consolas', monospace;
       font-size: 0.8125rem;
       line-height: 1.6;
-      color: #e2e8f0;
+      color: #f5f2ec;
     }
 
     /* Syntax Highlighting */
-    .token-directive { color: #f472b6; }
-    .token-attr { color: #7dd3fc; }
-    .token-string { color: #86efac; }
-    .token-slot { color: #fcd34d; font-weight: 600; }
-    .token-comment { color: #64748b; font-style: italic; }
-    .token-keyword { color: #c4b5fd; }
-    .token-heading { color: #67e8f9; font-weight: 600; }
+    .token-directive { color: #ff7a5c; }
+    .token-attr { color: #ffd1a6; }
+    .token-string { color: #c4e8d0; }
+    .token-slot { color: #f6d365; font-weight: 600; }
+    .token-comment { color: #9b948c; font-style: italic; }
+    .token-keyword { color: #ffd1c1; }
+    .token-heading { color: #f3c969; font-weight: 600; }
 
     /* Sections */
     section {
@@ -189,9 +211,10 @@
       margin-top: 2rem;
       margin-bottom: 1rem;
       font-weight: 600;
+      font-family: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
     }
 
-    h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+    h1 { font-size: 2rem; border-bottom: 2px solid var(--text); padding-bottom: 0.5rem; }
     h2 { font-size: 1.5rem; }
     h3 { font-size: 1.25rem; }
     h4 { font-size: 1.125rem; }
@@ -202,7 +225,7 @@
 
     /* VERA Entities */
     .vera-entity {
-      border-radius: 8px;
+      border-radius: var(--radius);
       margin: 1.5rem 0;
       overflow: hidden;
     }
@@ -223,11 +246,11 @@
     }
 
     .vera-entity-header .entity-id {
-      font-family: monospace;
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 0.75rem;
       background: rgba(0,0,0,0.1);
       padding: 0.125rem 0.5rem;
-      border-radius: 4px;
+      border-radius: var(--radius);
     }
 
     .vera-entity-body {
@@ -299,19 +322,19 @@
 
     .vera-example .solution-label {
       font-weight: 600;
-      color: #a16207;
+      color: #b06b18;
     }
 
     /* Code Block */
     .vera-code {
       background: var(--bg-code);
-      border-radius: 8px;
+      border-radius: var(--radius);
       overflow: hidden;
     }
 
     .vera-code .vera-entity-header {
-      background: rgba(255,255,255,0.05);
-      color: #94a3b8;
+      background: rgba(255,255,255,0.06);
+      color: #c9c2b8;
     }
 
     .vera-code pre {
@@ -321,39 +344,39 @@
     }
 
     .vera-code code {
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-family: 'IBM Plex Mono', 'Fira Code', monospace;
       font-size: 0.875rem;
-      color: #e2e8f0;
+      color: #f5f2ec;
     }
 
     /* Admonition */
     .vera-admonition {
-      border-radius: 8px;
+      border-radius: var(--radius);
       margin: 1.5rem 0;
     }
 
     .vera-admonition.note {
-      background: #eff6ff;
+      background: #fff1ec;
       border-left: 4px solid var(--admonition-note);
     }
 
     .vera-admonition.note .vera-entity-header {
-      background: rgba(59, 130, 246, 0.1);
+      background: rgba(255, 77, 46, 0.1);
       color: var(--admonition-note);
     }
 
     .vera-admonition.warning {
-      background: #fffbeb;
+      background: #fff1d6;
       border-left: 4px solid var(--admonition-warning);
     }
 
     .vera-admonition.warning .vera-entity-header {
-      background: rgba(245, 158, 11, 0.1);
-      color: #b45309;
+      background: rgba(194, 124, 29, 0.1);
+      color: #b06b18;
     }
 
     .vera-admonition.tip {
-      background: #f0fdf4;
+      background: #eef8f2;
       border-left: 4px solid var(--admonition-tip);
     }
 
@@ -363,12 +386,12 @@
     }
 
     .vera-admonition.important {
-      background: #faf5ff;
+      background: #eef6f7;
       border-left: 4px solid var(--admonition-important);
     }
 
     .vera-admonition.important .vera-entity-header {
-      background: rgba(168, 85, 247, 0.1);
+      background: rgba(26, 107, 122, 0.1);
       color: var(--admonition-important);
     }
 
@@ -378,7 +401,7 @@
       border-left: 4px solid var(--secondary);
       padding: 1.5rem;
       margin: 1.5rem 0;
-      border-radius: 0 8px 8px 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
     }
 
     .vera-quote blockquote {
@@ -432,7 +455,7 @@
 
     .vera-figure img {
       max-width: 100%;
-      border-radius: 8px;
+      border-radius: var(--radius);
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
 
@@ -483,7 +506,7 @@
     .vera-reference {
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius);
       padding: 1rem 1.25rem;
       margin: 0.75rem 0;
     }
@@ -519,17 +542,17 @@
     }
 
     code:not(pre code) {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 0.875em;
       background: var(--bg-alt);
       padding: 0.125rem 0.375rem;
-      border-radius: 4px;
+      border-radius: var(--radius);
       border: 1px solid var(--border);
     }
 
     /* Math (simulated) */
     .math {
-      font-family: 'Times New Roman', serif;
+      font-family: 'IBM Plex Serif', 'Times New Roman', serif;
       font-style: italic;
     }
 
@@ -543,7 +566,7 @@
     .toc {
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius);
       padding: 1.5rem;
       margin: 2rem 0;
     }
@@ -583,14 +606,14 @@
       padding: 0.125rem 0.5rem;
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 999px;
       color: var(--text-muted);
     }
 
     .provenance-badge.verified {
-      background: #dcfce7;
-      border-color: #86efac;
-      color: #166534;
+      background: #e8f6ee;
+      border-color: #cbe7d6;
+      color: #1f8a4c;
     }
 
     .confidence-bar {
@@ -621,9 +644,9 @@
 
     /* Abstract Block */
     .vera-abstract {
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      background: linear-gradient(135deg, #f7f6f2 0%, #efeee9 100%);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius);
       padding: 1.5rem;
       margin: 1.5rem 0;
       font-style: italic;
@@ -640,7 +663,7 @@
     .vera-proof {
       background: var(--proof-bg);
       border-left: 4px solid var(--proof-border);
-      border-radius: 0 8px 8px 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
     }
 
     .vera-proof .vera-entity-header {
@@ -650,72 +673,72 @@
 
     /* Guarantee Block */
     .vera-guarantee {
-      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-      border: 2px solid #10b981;
-      border-radius: 8px;
+      background: linear-gradient(135deg, #eef8f2 0%, #e2f1e9 100%);
+      border: 2px solid #1f8a4c;
+      border-radius: var(--radius);
     }
 
     .vera-guarantee .vera-entity-header {
-      background: rgba(16, 185, 129, 0.1);
-      color: #059669;
+      background: rgba(31, 138, 76, 0.1);
+      color: #1f8a4c;
     }
 
     .vera-guarantee .property {
       font-weight: 600;
       font-size: 1.1rem;
-      color: #047857;
+      color: #1f8a4c;
     }
 
     /* Operation Block (API) */
     .vera-operation {
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius);
       overflow: hidden;
     }
 
     .vera-operation .vera-entity-header {
-      background: #1e293b;
-      color: white;
+      background: var(--text);
+      color: var(--bg);
     }
 
     .vera-operation .method-badge {
       display: inline-block;
       padding: 0.25rem 0.5rem;
-      border-radius: 4px;
+      border-radius: var(--radius);
       font-weight: 700;
       font-size: 0.75rem;
       text-transform: uppercase;
     }
 
-    .vera-operation .method-badge.get { background: #22c55e; color: white; }
-    .vera-operation .method-badge.post { background: #3b82f6; color: white; }
-    .vera-operation .method-badge.put { background: #f59e0b; color: white; }
-    .vera-operation .method-badge.delete { background: #ef4444; color: white; }
+    .vera-operation .method-badge.get { background: #1f8a4c; color: white; }
+    .vera-operation .method-badge.post { background: #ff4d2e; color: white; }
+    .vera-operation .method-badge.put { background: #c27c1d; color: white; }
+    .vera-operation .method-badge.delete { background: #c2412d; color: white; }
 
     .vera-operation .endpoint {
-      font-family: monospace;
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 0.9rem;
-      color: #94a3b8;
+      color: var(--text-muted);
     }
 
     /* Exercise Block */
     .vera-exercise {
-      background: #fef3c7;
-      border-left: 4px solid #d97706;
-      border-radius: 0 8px 8px 0;
+      background: #fff1d6;
+      border-left: 4px solid #c27c1d;
+      border-radius: 0 var(--radius) var(--radius) 0;
     }
 
     .vera-exercise .vera-entity-header {
-      background: rgba(217, 119, 6, 0.1);
-      color: #b45309;
+      background: rgba(194, 124, 29, 0.1);
+      color: #c27c1d;
     }
 
     .vera-exercise .points {
-      background: #fbbf24;
-      color: #78350f;
+      background: #e9b763;
+      color: #6d4513;
       padding: 0.125rem 0.5rem;
-      border-radius: 4px;
+      border-radius: var(--radius);
       font-weight: 600;
       font-size: 0.75rem;
     }
@@ -724,13 +747,13 @@
     .vera-profile {
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius);
       overflow: hidden;
     }
 
     .vera-profile .vera-entity-header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
+      background: var(--text);
+      color: var(--bg);
       padding: 1rem 1.25rem;
     }
 
@@ -761,13 +784,13 @@
       text-align: center;
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius);
       padding: 1rem;
     }
 
     .vera-figure-block img {
       max-width: 100%;
-      border-radius: 6px;
+      border-radius: var(--radius);
     }
 
     .vera-figure-block figcaption {
@@ -779,20 +802,20 @@
 
     /* Result Block */
     .vera-result {
-      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-      border: 1px solid #3b82f6;
-      border-radius: 8px;
+      background: linear-gradient(135deg, #fff1ec 0%, #ffe6de 100%);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
     }
 
     .vera-result .vera-entity-header {
-      background: rgba(59, 130, 246, 0.1);
-      color: #1d4ed8;
+      background: rgba(255, 77, 46, 0.1);
+      color: var(--primary-dark);
     }
 
     .vera-result .metric-value {
       font-size: 2rem;
       font-weight: 700;
-      color: #1d4ed8;
+      color: var(--primary-dark);
     }
 
     .vera-result .metric-name {
@@ -801,7 +824,7 @@
     }
 
     .vera-result .variance {
-      color: #64748b;
+      color: var(--text-muted);
       font-size: 0.875rem;
     }
 
@@ -809,7 +832,7 @@
     .vera-comparison {
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius);
     }
 
     .vera-comparison .vera-entity-header {
@@ -818,10 +841,10 @@
     }
 
     .vera-comparison .winner-badge {
-      background: #22c55e;
-      color: white;
+      background: var(--primary);
+      color: var(--bg);
       padding: 0.125rem 0.5rem;
-      border-radius: 4px;
+      border-radius: var(--radius);
       font-size: 0.75rem;
       font-weight: 600;
     }
@@ -829,7 +852,7 @@
     /* Dialogue Block */
     .vera-dialogue {
       background: var(--bg-alt);
-      border-radius: 8px;
+      border-radius: var(--radius);
       padding: 1rem 1.25rem;
       margin: 0.75rem 0;
     }
@@ -848,11 +871,11 @@
 
     /* Verse Block */
     .vera-verse {
-      background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
-      border-left: 4px solid #c026d3;
+      background: linear-gradient(135deg, #f5f4f2 0%, #edece7 100%);
+      border-left: 4px solid var(--text);
       padding: 1.5rem;
       margin: 1.5rem 0;
-      border-radius: 0 8px 8px 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
     }
 
     .vera-verse .title {
@@ -877,12 +900,12 @@
 
     /* Letter Block */
     .vera-letter {
-      background: #fffbeb;
-      border: 1px solid #fcd34d;
-      border-radius: 8px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 1.5rem;
       margin: 1.5rem 0;
-      font-family: 'Georgia', serif;
+      font-family: 'IBM Plex Serif', serif;
     }
 
     .vera-letter .salutation {
@@ -912,13 +935,13 @@
 
     /* Enum Def */
     .vera-enum {
-      background: #fef3c7;
-      border-left: 4px solid #f59e0b;
+      background: #fff1d6;
+      border-left: 4px solid #c27c1d;
     }
 
     .vera-enum .vera-entity-header {
-      background: rgba(245, 158, 11, 0.1);
-      color: #b45309;
+      background: rgba(194, 124, 29, 0.1);
+      color: #c27c1d;
     }
 
     .vera-enum .variant-list {
@@ -929,66 +952,66 @@
     }
 
     .vera-enum .variant {
-      background: white;
-      border: 1px solid #fcd34d;
+      background: var(--bg);
+      border: 1px solid #e1c48c;
       padding: 0.25rem 0.75rem;
-      border-radius: 4px;
-      font-family: monospace;
+      border-radius: var(--radius);
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 0.875rem;
     }
 
     /* Function Def */
     .vera-function {
-      background: #ecfdf5;
-      border-left: 4px solid #10b981;
+      background: #eef8f2;
+      border-left: 4px solid #1f8a4c;
     }
 
     .vera-function .vera-entity-header {
-      background: rgba(16, 185, 129, 0.1);
-      color: #059669;
+      background: rgba(31, 138, 76, 0.1);
+      color: #1f8a4c;
     }
 
     .vera-function .signature {
-      font-family: monospace;
-      background: #1e293b;
-      color: #e2e8f0;
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--bg-code);
+      color: #f5f2ec;
       padding: 0.75rem 1rem;
-      border-radius: 6px;
+      border-radius: var(--radius);
       margin: 0.75rem 0;
       overflow-x: auto;
     }
 
     /* Predicate Def */
     .vera-predicate {
-      background: #f0f9ff;
-      border-left: 4px solid #0ea5e9;
+      background: #eef6f7;
+      border-left: 4px solid #1a6b7a;
     }
 
     .vera-predicate .vera-entity-header {
-      background: rgba(14, 165, 233, 0.1);
-      color: #0284c7;
+      background: rgba(26, 107, 122, 0.1);
+      color: #1a6b7a;
     }
 
     .vera-predicate .formula {
-      font-family: 'Times New Roman', serif;
+      font-family: 'IBM Plex Serif', 'Times New Roman', serif;
       font-style: italic;
       font-size: 1.125rem;
       text-align: center;
       padding: 1rem;
-      background: white;
-      border-radius: 6px;
+      background: var(--bg);
+      border-radius: var(--radius);
       margin: 0.75rem 0;
     }
 
     /* Axiom Def */
     .vera-axiom {
-      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-      border-left: 4px solid #ef4444;
+      background: linear-gradient(135deg, #fdeeee 0%, #f9dede 100%);
+      border-left: 4px solid var(--danger);
     }
 
     .vera-axiom .vera-entity-header {
-      background: rgba(239, 68, 68, 0.1);
-      color: #dc2626;
+      background: rgba(194, 65, 45, 0.1);
+      color: var(--danger);
     }
 
     .vera-axiom .statement {
@@ -998,13 +1021,13 @@
 
     /* Rule Def */
     .vera-rule {
-      background: #f5f3ff;
-      border-left: 4px solid #8b5cf6;
+      background: #eef6f7;
+      border-left: 4px solid var(--info);
     }
 
     .vera-rule .vera-entity-header {
-      background: rgba(139, 92, 246, 0.1);
-      color: #7c3aed;
+      background: rgba(26, 107, 122, 0.1);
+      color: var(--info);
     }
 
     .vera-rule .inference {
@@ -1017,7 +1040,7 @@
     }
 
     .vera-rule .rule-line {
-      border-top: 2px solid #8b5cf6;
+      border-top: 2px solid var(--info);
       width: 80%;
       margin: 0.5rem auto;
     }
@@ -1028,21 +1051,21 @@
 
     /* Grammar Def */
     .vera-grammar {
-      background: #fefce8;
-      border-left: 4px solid #ca8a04;
+      background: #fff3db;
+      border-left: 4px solid #c27c1d;
     }
 
     .vera-grammar .vera-entity-header {
-      background: rgba(202, 138, 4, 0.1);
-      color: #a16207;
+      background: rgba(194, 124, 29, 0.1);
+      color: #c27c1d;
     }
 
     .vera-grammar .productions {
-      font-family: monospace;
-      background: #1e293b;
-      color: #e2e8f0;
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--bg-code);
+      color: #f5f2ec;
       padding: 1rem;
-      border-radius: 6px;
+      border-radius: var(--radius);
       margin: 0.75rem 0;
       white-space: pre;
       overflow-x: auto;
@@ -1055,25 +1078,25 @@
     }
 
     .vera-judgment .vera-entity-header {
-      background: rgba(20, 184, 166, 0.1);
-      color: #0d9488;
+      background: rgba(26, 107, 122, 0.1);
+      color: var(--info);
     }
 
     .vera-judgment .form {
-      font-family: 'Times New Roman', serif;
+      font-family: 'IBM Plex Serif', 'Times New Roman', serif;
       font-size: 1.25rem;
       text-align: center;
       padding: 1rem;
-      background: white;
-      border-radius: 6px;
+      background: var(--bg);
+      border-radius: var(--radius);
       margin: 0.75rem 0;
     }
 
     /* Proof Step (supporting) */
     .vera-proof-step {
-      background: white;
-      border: 1px solid #e9d5ff;
-      border-radius: 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 0.75rem 1rem;
       margin: 0.5rem 0;
       display: flex;
@@ -1504,23 +1527,23 @@ A simple primality test using trial division.
               <div class="vera-entity-header">
                 <span class="entity-type">Python</span>
                 <span class="entity-id">#code-isprime</span>
-                <span class="provenance-badge" style="background: #dcfce7; color: #166534;">executable</span>
+                <span class="provenance-badge" style="background: #e8f6ee; color: #1f8a4c;">executable</span>
               </div>
-              <pre><code><span style="color: #c4b5fd;">def</span> <span style="color: #7dd3fc;">is_prime</span>(n: <span style="color: #fcd34d;">int</span>) -> <span style="color: #fcd34d;">bool</span>:
-    <span style="color: #86efac;">"""Check if n is prime."""</span>
-    <span style="color: #c4b5fd;">if</span> n < <span style="color: #f472b6;">2</span>:
-        <span style="color: #c4b5fd;">return</span> <span style="color: #f472b6;">False</span>
-    <span style="color: #c4b5fd;">for</span> i <span style="color: #c4b5fd;">in</span> <span style="color: #7dd3fc;">range</span>(<span style="color: #f472b6;">2</span>, <span style="color: #7dd3fc;">int</span>(n**<span style="color: #f472b6;">0.5</span>) + <span style="color: #f472b6;">1</span>):
-        <span style="color: #c4b5fd;">if</span> n % i == <span style="color: #f472b6;">0</span>:
-            <span style="color: #c4b5fd;">return</span> <span style="color: #f472b6;">False</span>
-    <span style="color: #c4b5fd;">return</span> <span style="color: #f472b6;">True</span>
+              <pre><code><span style="color: #ffd1c1;">def</span> <span style="color: #ffd1a6;">is_prime</span>(n: <span style="color: #f6d365;">int</span>) -> <span style="color: #f6d365;">bool</span>:
+    <span style="color: #c4e8d0;">"""Check if n is prime."""</span>
+    <span style="color: #ffd1c1;">if</span> n < <span style="color: #ff7a5c;">2</span>:
+        <span style="color: #ffd1c1;">return</span> <span style="color: #ff7a5c;">False</span>
+    <span style="color: #ffd1c1;">for</span> i <span style="color: #ffd1c1;">in</span> <span style="color: #ffd1a6;">range</span>(<span style="color: #ff7a5c;">2</span>, <span style="color: #ffd1a6;">int</span>(n**<span style="color: #ff7a5c;">0.5</span>) + <span style="color: #ff7a5c;">1</span>):
+        <span style="color: #ffd1c1;">if</span> n % i == <span style="color: #ff7a5c;">0</span>:
+            <span style="color: #ffd1c1;">return</span> <span style="color: #ff7a5c;">False</span>
+    <span style="color: #ffd1c1;">return</span> <span style="color: #ff7a5c;">True</span>
 
-<span style="color: #64748b;"># Test</span>
-<span style="color: #7dd3fc;">print</span>([n <span style="color: #c4b5fd;">for</span> n <span style="color: #c4b5fd;">in</span> <span style="color: #7dd3fc;">range</span>(<span style="color: #f472b6;">20</span>) <span style="color: #c4b5fd;">if</span> is_prime(n)])</code></pre>
+<span style="color: #9b948c;"># Test</span>
+<span style="color: #ffd1a6;">print</span>([n <span style="color: #ffd1c1;">for</span> n <span style="color: #ffd1c1;">in</span> <span style="color: #ffd1a6;">range</span>(<span style="color: #ff7a5c;">20</span>) <span style="color: #ffd1c1;">if</span> is_prime(n)])</code></pre>
             </div>
-            <div style="background: #0f172a; padding: 0.75rem 1.25rem; border-top: 1px solid #334155;">
-              <div style="font-size: 0.6875rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Output</div>
-              <code style="color: #86efac;">[2, 3, 5, 7, 11, 13, 17, 19]</code>
+            <div style="background: var(--bg-code); padding: 0.75rem 1.25rem; border-top: 1px solid #2a2622;">
+              <div style="font-size: 0.6875rem; color: #c9c2b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Output</div>
+              <code style="color: #c4e8d0;">[2, 3, 5, 7, 11, 13, 17, 19]</code>
             </div>
             <div style="padding: 0.75rem 1.25rem; background: var(--bg-alt); font-size: 0.875rem; color: var(--text-muted); font-style: italic;">
               A simple primality test using trial division.
@@ -1821,40 +1844,40 @@ Prime factorization tree showing 84 = 2² × 3 × 7
             <div class="vera-figure">
               <svg width="300" height="200" viewBox="0 0 300 200" style="font-family: sans-serif; font-size: 14px;">
                 <!-- 84 at top -->
-                <rect x="125" y="10" width="50" height="30" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <rect x="125" y="10" width="50" height="30" rx="5" fill="#fff1ec" stroke="#ff4d2e" stroke-width="2"/>
                 <text x="150" y="30" text-anchor="middle" font-weight="bold">84</text>
 
                 <!-- Lines down -->
-                <line x1="135" y1="40" x2="80" y2="70" stroke="#94a3b8" stroke-width="2"/>
-                <line x1="165" y1="40" x2="220" y2="70" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="135" y1="40" x2="80" y2="70" stroke="#9b948c" stroke-width="2"/>
+                <line x1="165" y1="40" x2="220" y2="70" stroke="#9b948c" stroke-width="2"/>
 
                 <!-- 2 and 42 -->
-                <circle cx="80" cy="85" r="18" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <circle cx="80" cy="85" r="18" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                 <text x="80" y="90" text-anchor="middle" font-weight="bold">2</text>
 
-                <rect x="195" y="70" width="50" height="30" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <rect x="195" y="70" width="50" height="30" rx="5" fill="#fff1ec" stroke="#ff4d2e" stroke-width="2"/>
                 <text x="220" y="90" text-anchor="middle" font-weight="bold">42</text>
 
                 <!-- Lines from 42 -->
-                <line x1="205" y1="100" x2="150" y2="130" stroke="#94a3b8" stroke-width="2"/>
-                <line x1="235" y1="100" x2="270" y2="130" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="205" y1="100" x2="150" y2="130" stroke="#9b948c" stroke-width="2"/>
+                <line x1="235" y1="100" x2="270" y2="130" stroke="#9b948c" stroke-width="2"/>
 
                 <!-- 2 and 21 -->
-                <circle cx="150" cy="145" r="18" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <circle cx="150" cy="145" r="18" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                 <text x="150" y="150" text-anchor="middle" font-weight="bold">2</text>
 
-                <rect x="245" y="130" width="50" height="30" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <rect x="245" y="130" width="50" height="30" rx="5" fill="#fff1ec" stroke="#ff4d2e" stroke-width="2"/>
                 <text x="270" y="150" text-anchor="middle" font-weight="bold">21</text>
 
                 <!-- Lines from 21 -->
-                <line x1="255" y1="160" x2="220" y2="185" stroke="#94a3b8" stroke-width="2"/>
-                <line x1="285" y1="160" x2="270" y2="185" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="255" y1="160" x2="220" y2="185" stroke="#9b948c" stroke-width="2"/>
+                <line x1="285" y1="160" x2="270" y2="185" stroke="#9b948c" stroke-width="2"/>
 
                 <!-- 3 and 7 -->
-                <circle cx="220" cy="185" r="15" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <circle cx="220" cy="185" r="15" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                 <text x="220" y="190" text-anchor="middle" font-weight="bold">3</text>
 
-                <circle cx="270" cy="185" r="15" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <circle cx="270" cy="185" r="15" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                 <text x="270" y="190" text-anchor="middle" font-weight="bold">7</text>
               </svg>
               <figcaption>Prime factorization tree showing 84 = 2² × 3 × 7</figcaption>
@@ -1931,49 +1954,49 @@ Numbers crossed out are composite; remaining are prime.
               <svg width="320" height="100" viewBox="0 0 320 100" style="font-family: sans-serif;">
                 <!-- Row of numbers 1-10 -->
                 <g transform="translate(10, 10)">
-                  <rect x="0" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="14" y="19" text-anchor="middle" font-size="12" fill="#991b1b">1</text>
-                  <circle cx="44" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <rect x="0" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="14" y="19" text-anchor="middle" font-size="12" fill="#7e3a2c">1</text>
+                  <circle cx="44" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="44" y="18" text-anchor="middle" font-size="12" font-weight="bold">2</text>
-                  <circle cx="74" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <circle cx="74" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="74" y="18" text-anchor="middle" font-size="12" font-weight="bold">3</text>
-                  <rect x="88" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="102" y="19" text-anchor="middle" font-size="12" fill="#991b1b">4</text>
-                  <circle cx="134" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <rect x="88" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="102" y="19" text-anchor="middle" font-size="12" fill="#7e3a2c">4</text>
+                  <circle cx="134" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="134" y="18" text-anchor="middle" font-size="12" font-weight="bold">5</text>
-                  <rect x="148" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="162" y="19" text-anchor="middle" font-size="12" fill="#991b1b">6</text>
-                  <circle cx="194" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <rect x="148" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="162" y="19" text-anchor="middle" font-size="12" fill="#7e3a2c">6</text>
+                  <circle cx="194" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="194" y="18" text-anchor="middle" font-size="12" font-weight="bold">7</text>
-                  <rect x="208" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="222" y="19" text-anchor="middle" font-size="12" fill="#991b1b">8</text>
-                  <rect x="238" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="252" y="19" text-anchor="middle" font-size="12" fill="#991b1b">9</text>
-                  <rect x="268" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="282" y="19" text-anchor="middle" font-size="12" fill="#991b1b">10</text>
+                  <rect x="208" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="222" y="19" text-anchor="middle" font-size="12" fill="#7e3a2c">8</text>
+                  <rect x="238" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="252" y="19" text-anchor="middle" font-size="12" fill="#7e3a2c">9</text>
+                  <rect x="268" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="282" y="19" text-anchor="middle" font-size="12" fill="#7e3a2c">10</text>
                 </g>
                 <!-- Row 11-20 -->
                 <g transform="translate(10, 45)">
-                  <circle cx="14" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <circle cx="14" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="14" y="18" text-anchor="middle" font-size="12" font-weight="bold">11</text>
-                  <rect x="28" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="42" y="19" text-anchor="middle" font-size="12" fill="#991b1b">12</text>
-                  <circle cx="74" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <rect x="28" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="42" y="19" text-anchor="middle" font-size="12" fill="#7e3a2c">12</text>
+                  <circle cx="74" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="74" y="18" text-anchor="middle" font-size="12" font-weight="bold">13</text>
-                  <rect x="88" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="102" y="19" text-anchor="middle" font-size="10" fill="#991b1b">14</text>
-                  <rect x="118" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="132" y="19" text-anchor="middle" font-size="10" fill="#991b1b">15</text>
-                  <rect x="148" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="162" y="19" text-anchor="middle" font-size="10" fill="#991b1b">16</text>
-                  <circle cx="194" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <rect x="88" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="102" y="19" text-anchor="middle" font-size="10" fill="#7e3a2c">14</text>
+                  <rect x="118" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="132" y="19" text-anchor="middle" font-size="10" fill="#7e3a2c">15</text>
+                  <rect x="148" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="162" y="19" text-anchor="middle" font-size="10" fill="#7e3a2c">16</text>
+                  <circle cx="194" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="194" y="18" text-anchor="middle" font-size="12" font-weight="bold">17</text>
-                  <rect x="208" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="222" y="19" text-anchor="middle" font-size="10" fill="#991b1b">18</text>
-                  <circle cx="252" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <rect x="208" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="222" y="19" text-anchor="middle" font-size="10" fill="#7e3a2c">18</text>
+                  <circle cx="252" cy="14" r="14" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
                   <text x="252" y="18" text-anchor="middle" font-size="12" font-weight="bold">19</text>
-                  <rect x="268" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
-                  <text x="282" y="19" text-anchor="middle" font-size="10" fill="#991b1b">20</text>
+                  <rect x="268" y="0" width="28" height="28" rx="4" fill="#fdeeee" stroke="#c2412d"/>
+                  <text x="282" y="19" text-anchor="middle" font-size="10" fill="#7e3a2c">20</text>
                 </g>
               </svg>
               <figcaption>The Sieve of Eratosthenes for finding primes up to 20</figcaption>
@@ -2065,7 +2088,7 @@ its polylogarithmic time complexity.
                       <th style="padding: 0.5rem; border: 1px solid var(--border);">Criterion</th>
                       <th style="padding: 0.5rem; border: 1px solid var(--border);">Trial Division</th>
                       <th style="padding: 0.5rem; border: 1px solid var(--border);">Sieve</th>
-                      <th style="padding: 0.5rem; border: 1px solid var(--border); background: #dcfce7;">Miller-Rabin</th>
+                      <th style="padding: 0.5rem; border: 1px solid var(--border); background: #eef8f2;">Miller-Rabin</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2073,19 +2096,19 @@ its polylogarithmic time complexity.
                       <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">Time</td>
                       <td style="padding: 0.5rem; border: 1px solid var(--border);">O(√n)</td>
                       <td style="padding: 0.5rem; border: 1px solid var(--border);">O(n log log n)</td>
-                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #f0fdf4;">O(k log³n)</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #eef8f2;">O(k log³n)</td>
                     </tr>
                     <tr>
                       <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">Space</td>
                       <td style="padding: 0.5rem; border: 1px solid var(--border);">O(1)</td>
                       <td style="padding: 0.5rem; border: 1px solid var(--border);">O(n)</td>
-                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #f0fdf4;">O(1)</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #eef8f2;">O(1)</td>
                     </tr>
                     <tr>
                       <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">Deterministic</td>
                       <td style="padding: 0.5rem; border: 1px solid var(--border);">Yes</td>
                       <td style="padding: 0.5rem; border: 1px solid var(--border);">Yes</td>
-                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #f0fdf4;">No*</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #eef8f2;">No*</td>
                     </tr>
                   </tbody>
                 </table>
@@ -2274,13 +2297,13 @@ Check if a number is prime.
                 </div>
                 <div style="margin-bottom: 1rem;">
                   <strong style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Returns</strong>
-                  <code style="display: block; margin-top: 0.5rem; padding: 0.5rem; background: var(--bg-code); color: #86efac; border-radius: 4px;">{ "isPrime": boolean, "factors": number[] }</code>
+                  <code style="display: block; margin-top: 0.5rem; padding: 0.5rem; background: var(--bg-code); color: #c4e8d0; border-radius: 4px;">{ "isPrime": boolean, "factors": number[] }</code>
                 </div>
                 <div>
                   <strong style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Errors</strong>
                   <ul style="margin: 0.5rem 0; font-size: 0.875rem;">
-                    <li><code style="color: #ef4444;">400</code> — Invalid input (not a positive integer)</li>
-                    <li><code style="color: #ef4444;">413</code> — Number too large (> 10¹⁵)</li>
+                    <li><code style="color: #c2412d;">400</code> — Invalid input (not a positive integer)</li>
+                    <li><code style="color: #c2412d;">413</code> — Number too large (> 10¹⁵)</li>
                   </ul>
                 </div>
               </div>
@@ -2626,7 +2649,7 @@ number of primes less than or equal to $n$.
               <div class="vera-entity-body">
                 <div class="signature">π : ℕ → ℕ</div>
                 <p>The prime-counting function. <span class="math">π(n)</span> returns the number of primes less than or equal to <span class="math">n</span>.</p>
-                <div style="background: #f0fdf4; padding: 0.75rem; border-radius: 6px; font-family: monospace; font-size: 0.875rem;">
+                <div style="background: #eef8f2; padding: 0.75rem; border-radius: 6px; font-family: monospace; font-size: 0.875rem;">
                   π(1)  = 0<br>
                   π(2)  = 1<br>
                   π(10) = 4<br>
@@ -3146,33 +3169,33 @@ defined in the algebra document.
             <h4 style="margin: 0 0 1rem 0; font-size: 1rem;">Reference Graph</h4>
             <svg width="100%" height="180" viewBox="0 0 500 180" style="font-family: sans-serif; font-size: 12px;">
               <!-- Document A -->
-              <rect x="20" y="20" width="200" height="140" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
-              <text x="120" y="45" text-anchor="middle" font-weight="bold" fill="#1d4ed8">algebra.vera.md</text>
-              <text x="40" y="65" font-size="10" fill="#64748b">documentId: abc123...</text>
+              <rect x="20" y="20" width="200" height="140" rx="8" fill="#fff1ec" stroke="#ff4d2e" stroke-width="2"/>
+              <text x="120" y="45" text-anchor="middle" font-weight="bold" fill="#cf3a23">algebra.vera.md</text>
+              <text x="40" y="65" font-size="10" fill="#9b948c">documentId: abc123...</text>
 
-              <rect x="40" y="80" width="160" height="60" rx="4" fill="white" stroke="#3b82f6"/>
-              <text x="50" y="100" font-weight="600" fill="#1e293b">#thm-group</text>
-              <text x="50" y="118" font-size="10" fill="#64748b">alias: group-axioms</text>
-              <text x="50" y="132" font-size="10" fill="#64748b">Group axioms...</text>
+              <rect x="40" y="80" width="160" height="60" rx="4" fill="white" stroke="#ff4d2e"/>
+              <text x="50" y="100" font-weight="600" fill="#141210">#thm-group</text>
+              <text x="50" y="118" font-size="10" fill="#9b948c">alias: group-axioms</text>
+              <text x="50" y="132" font-size="10" fill="#9b948c">Group axioms...</text>
 
               <!-- Document B -->
-              <rect x="280" y="20" width="200" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+              <rect x="280" y="20" width="200" height="140" rx="8" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
               <text x="380" y="45" text-anchor="middle" font-weight="bold" fill="#166534">number-theory.vera.md</text>
-              <text x="300" y="65" font-size="10" fill="#64748b">documentId: xyz789...</text>
+              <text x="300" y="65" font-size="10" fill="#9b948c">documentId: xyz789...</text>
 
-              <rect x="300" y="80" width="160" height="60" rx="4" fill="white" stroke="#22c55e"/>
-              <text x="310" y="100" font-weight="600" fill="#1e293b">#thm-prime-group</text>
-              <text x="310" y="118" font-size="10" fill="#64748b">refs: doc:abc123...#group-axioms</text>
-              <text x="310" y="132" font-size="10" fill="#64748b">Cyclic group theorem...</text>
+              <rect x="300" y="80" width="160" height="60" rx="4" fill="white" stroke="#1f8a4c"/>
+              <text x="310" y="100" font-weight="600" fill="#141210">#thm-prime-group</text>
+              <text x="310" y="118" font-size="10" fill="#9b948c">refs: doc:abc123...#group-axioms</text>
+              <text x="310" y="132" font-size="10" fill="#9b948c">Cyclic group theorem...</text>
 
               <!-- Arrow -->
               <defs>
                 <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                  <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#9b948c"/>
                 </marker>
               </defs>
-              <line x1="300" y1="110" x2="210" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,3"/>
-              <text x="255" y="100" text-anchor="middle" font-size="10" fill="#64748b">refs</text>
+              <line x1="300" y1="110" x2="210" y2="110" stroke="#9b948c" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,3"/>
+              <text x="255" y="100" text-anchor="middle" font-size="10" fill="#9b948c">refs</text>
             </svg>
           </div>
         </div>
@@ -3216,38 +3239,38 @@ defined in the algebra document.
           <div style="padding: 1rem;">
             <svg width="100%" height="200" viewBox="0 0 500 200" style="font-family: sans-serif; font-size: 12px;">
               <!-- Source PDF -->
-              <rect x="20" y="80" width="100" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
-              <text x="70" y="100" text-anchor="middle" font-size="11" fill="#991b1b">source.pdf</text>
+              <rect x="20" y="80" width="100" height="50" rx="6" fill="#fdeeee" stroke="#c2412d" stroke-width="2"/>
+              <text x="70" y="100" text-anchor="middle" font-size="11" fill="#7e3a2c">source.pdf</text>
               <text x="70" y="118" text-anchor="middle" font-size="10" fill="#b91c1c">p.42</text>
 
               <!-- Original -->
-              <rect x="160" y="80" width="100" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+              <rect x="160" y="80" width="100" height="50" rx="6" fill="#fff1d6" stroke="#c27c1d" stroke-width="2"/>
               <text x="210" y="100" text-anchor="middle" font-size="11" font-weight="600">#thm-original</text>
               <text x="210" y="118" text-anchor="middle" font-size="10" fill="#b45309">85% conf</text>
 
               <!-- Corrected -->
-              <rect x="300" y="80" width="100" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+              <rect x="300" y="80" width="100" height="50" rx="6" fill="#eef8f2" stroke="#1f8a4c" stroke-width="2"/>
               <text x="350" y="100" text-anchor="middle" font-size="11" font-weight="600">#thm-corrected</text>
               <text x="350" y="118" text-anchor="middle" font-size="10" fill="#166534">98% conf</text>
 
               <!-- Simplified -->
-              <rect x="300" y="150" width="100" height="40" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+              <rect x="300" y="150" width="100" height="40" rx="6" fill="#fff1ec" stroke="#ff4d2e" stroke-width="2"/>
               <text x="350" y="175" text-anchor="middle" font-size="11" font-weight="600">#thm-simplified</text>
 
               <!-- Arrows -->
               <defs>
                 <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                  <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#9b948c"/>
                 </marker>
               </defs>
-              <line x1="120" y1="105" x2="155" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
-              <text x="137" y="95" text-anchor="middle" font-size="9" fill="#64748b">OCR</text>
+              <line x1="120" y1="105" x2="155" y2="105" stroke="#9b948c" stroke-width="2" marker-end="url(#arrow2)"/>
+              <text x="137" y="95" text-anchor="middle" font-size="9" fill="#9b948c">OCR</text>
 
-              <line x1="260" y1="105" x2="295" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
-              <text x="277" y="95" text-anchor="middle" font-size="9" fill="#64748b">corrected</text>
+              <line x1="260" y1="105" x2="295" y2="105" stroke="#9b948c" stroke-width="2" marker-end="url(#arrow2)"/>
+              <text x="277" y="95" text-anchor="middle" font-size="9" fill="#9b948c">corrected</text>
 
-              <line x1="350" y1="130" x2="350" y2="145" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
-              <text x="375" y="140" font-size="9" fill="#64748b">simplified</text>
+              <line x1="350" y1="130" x2="350" y2="145" stroke="#9b948c" stroke-width="2" marker-end="url(#arrow2)"/>
+              <text x="375" y="140" font-size="9" fill="#9b948c">simplified</text>
             </svg>
 
             <div style="margin-top: 1rem; padding: 1rem; background: var(--definition-bg); border-radius: 6px; border-left: 4px solid var(--definition-border);">
@@ -3327,7 +3350,7 @@ main theorem      <span class="token-comment"># no spaces</span></code></pre>
             </tbody>
           </table>
 
-          <div style="margin-top: 1rem; padding: 1rem; background: #fef3c7; border-radius: 6px; border-left: 4px solid #f59e0b;">
+          <div style="margin-top: 1rem; padding: 1rem; background: #fff1d6; border-radius: 6px; border-left: 4px solid #c27c1d;">
             <strong>Incremental Extraction:</strong> Forward references are allowed during extraction. Use <code>placeholder=true</code> for expected-but-not-yet-extracted entities, and resolve after all documents are processed.
           </div>
         </div>
@@ -3374,8 +3397,8 @@ main theorem      <span class="token-comment"># no spaces</span></code></pre>
       </table>
     </div>
 
-    <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; border: 1px solid #3b82f6;">
-      <h3 style="margin: 0 0 1rem 0; color: #1d4ed8;">Entity Checklist</h3>
+    <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #fff1ec 0%, #dbeafe 100%); border-radius: 12px; border: 1px solid #ff4d2e;">
+      <h3 style="margin: 0 0 1rem 0; color: #cf3a23;">Entity Checklist</h3>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.875rem;">
         <div>✓ section_block</div>
         <div>✓ figure_block</div>

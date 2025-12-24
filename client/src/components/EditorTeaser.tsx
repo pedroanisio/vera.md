@@ -15,14 +15,14 @@ export function EditorTeaser() {
         </div>
         
         <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-tight">
-          THE IDE FOR <br />
+          FORMALISM <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-foreground">
-            KNOWLEDGE.
+            MADE ACCESSIBLE.
           </span>
         </h2>
-        
+
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Write VERA with the speed of thought. The upcoming VERA Editor brings IDE-grade power to your documentation workflow.
+          Academic rigor shouldn't require academic tooling. You should be able to <code className="text-primary">pnpm install</code> a spec language, not configure a theorem prover. IDE completion, linting, and visualization built in.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

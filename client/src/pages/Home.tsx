@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { EntityGallery } from "@/components/EntityGallery";
 import { ProvenanceDemo } from "@/components/ProvenanceDemo";
 import { ConsistencyDemo } from "@/components/ConsistencyDemo";
+import { KnowledgeGraphDemo } from "@/components/KnowledgeGraphDemo";
 import { EditorTeaser } from "@/components/EditorTeaser";
 import SpecDemo from "@/components/SpecDemo";
 import { ArrowRight, FileText, GitBranch, Layers, ShieldCheck } from "lucide-react";
@@ -30,15 +31,15 @@ export default function Home() {
         <div className="container relative z-10">
           <div className="max-w-4xl">
             <div className="inline-block px-3 py-1 mb-6 border border-primary text-primary text-xs font-mono font-bold uppercase tracking-widest">
-              RFC v0.9.2 Specification
+              Structured Document Editor
             </div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
-              STRUCTURE <br />
-              <span className="text-primary">WITHOUT</span> <br />
-              COMPROMISE.
+              TRUTH <br />
+              <span className="text-primary">THROUGH</span> <br />
+              DATA.
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-10">
-              VERA extends Markdown with semantic entities to transform unstructured documents into machine-readable, verifiable knowledge bases.
+              Knowledge dies in documents. VERA transforms unstructured text into typed, queryable data structures where every theorem is validated, every reference resolves, and trust is queryable metadata.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="rounded-none h-14 px-8 text-lg font-bold">
@@ -63,23 +64,23 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             <div className="space-y-4">
               <Layers className="h-8 w-8 text-primary" />
-              <h3 className="text-xl font-bold">Semantic Layer</h3>
-              <p className="text-muted-foreground">Adds structured meaning to plain text without breaking standard Markdown compatibility.</p>
+              <h3 className="text-xl font-bold">Types Prevent Mistakes</h3>
+              <p className="text-muted-foreground">A theorem without a conclusion is impossible to construct. Invalid states are unrepresentable at compile time.</p>
             </div>
             <div className="space-y-4">
               <GitBranch className="h-8 w-8 text-primary" />
-              <h3 className="text-xl font-bold">Provenance Tracking</h3>
-              <p className="text-muted-foreground">Trace every entity back to its source with a robust three-layer provenance model.</p>
+              <h3 className="text-xl font-bold">Trust Is Metadata</h3>
+              <p className="text-muted-foreground">Content has provenance: who created it, how confident we are, whether it claims truth or invents fiction.</p>
             </div>
             <div className="space-y-4">
               <ShieldCheck className="h-8 w-8 text-primary" />
-              <h3 className="text-xl font-bold">Formal Fidelity</h3>
-              <p className="text-muted-foreground">Preserve mathematical and logical structures precisely for verification tools.</p>
+              <h3 className="text-xl font-bold">Queries, Not Grep</h3>
+              <p className="text-muted-foreground">"All theorems in category 'soundness' without proofs" becomes a trivial query, not hours of searching.</p>
             </div>
             <div className="space-y-4">
               <FileText className="h-8 w-8 text-primary" />
-              <h3 className="text-xl font-bold">Interchange Ready</h3>
-              <p className="text-muted-foreground">Entities survive format conversions, remaining semantic across HTML, LaTeX, and JSON.</p>
+              <h3 className="text-xl font-bold">One Source, Many Formats</h3>
+              <p className="text-muted-foreground">Render to Markdown, LaTeX, HTML, or slides from a single typed specification. Structure survives transformation.</p>
             </div>
           </div>
         </div>
@@ -89,9 +90,9 @@ export default function Home() {
       <section id="features" className="py-24">
         <div className="container">
           <div className="mb-16">
-            <h2 className="text-4xl font-black tracking-tight mb-4">ENTITY SHOWCASE</h2>
+            <h2 className="text-4xl font-black tracking-tight mb-4">DEFINITION KINDS</h2>
             <p className="text-xl text-muted-foreground max-w-2xl">
-              VERA defines 35+ specialized entity types. Explore how they are authored in Markdown and rendered for the web.
+              14 typed interfaces, 16 kind discriminants. From theorems and grammars to dialogues and letters. One generic core, many specialized domains: PL research, software architecture, literary manuscripts, historical archives.
             </p>
           </div>
 
@@ -106,14 +107,14 @@ export default function Home() {
         <div className="container relative z-10">
           <div className="mb-16">
             <div className="inline-block px-3 py-1 mb-6 border border-primary text-primary text-xs font-mono font-bold uppercase tracking-widest">
-              Traceability
+              Auditable
             </div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6">
-              BUILT FOR <br />
-              <span className="text-primary">TRUST.</span>
+              TRUST IS <br />
+              <span className="text-primary">QUERYABLE.</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-              VERA's three-layer provenance model tracks exactly where every piece of information comes from. Explore the layers below to see how trust is built into the schema.
+              In an age of AI-generated content, provenance isn't optional. Filter by "peer-reviewed claims only." Highlight AI-generated content for review. Separate historical facts from dramatized scenes. Trust is built into every entity.
             </p>
           </div>
 
@@ -126,18 +127,38 @@ export default function Home() {
         <div className="container relative z-10">
           <div className="mb-16">
             <div className="inline-block px-3 py-1 mb-6 border border-primary text-primary text-xs font-mono font-bold uppercase tracking-widest">
-              Consistency
+              Validated
             </div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6">
-              UNBREAKABLE <br />
-              <span className="text-primary">KNOWLEDGE GRAPH.</span>
+              EVERY REF <br />
+              <span className="text-primary">RESOLVES.</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-              VERA transforms isolated documents into a connected ecosystem. Reference entities across files with guaranteed integrity and build-time validation.
+              When the spec changes, you manually hunt for broken cross-references. Not anymore. VERA validates at build time: broken refs, missing conclusions, duplicate IDs. Living documentation that can't silently rot.
             </p>
           </div>
 
           <ConsistencyDemo />
+        </div>
+      </section>
+
+      {/* Knowledge Graph Section */}
+      <section id="graph" className="py-24 bg-muted/10 border-t border-border relative overflow-hidden">
+        <div className="container relative z-10">
+          <div className="mb-16">
+            <div className="inline-block px-3 py-1 mb-6 border border-primary text-primary text-xs font-mono font-bold uppercase tracking-widest">
+              Connected
+            </div>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6">
+              DOCUMENTS AS <br />
+              <span className="text-primary">GRAPHS.</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+              Every entity has a unique ID. References create edges. The result: a queryable dependency graph. Ask "what depends on Definition 2.3?" and get an answer in milliseconds, not hours of searching.
+            </p>
+          </div>
+
+          <KnowledgeGraphDemo />
         </div>
       </section>
 
@@ -163,7 +184,7 @@ export default function Home() {
                 <span className="font-bold tracking-tighter text-xl">VERA</span>
               </div>
               <p className="text-muted-foreground max-w-sm">
-                A semantic entity schema integrated with Markdown AST for structured documents.
+                From Latin <em>vera</em> (true things). Structured documents as data, not text. Where theorems are validated objects and trust is queryable metadata.
               </p>
             </div>
             
