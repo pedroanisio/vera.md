@@ -1,0 +1,3427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VERA Specification RFC v0.9.2 - Rendered Demo</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #64748b;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #06b6d4;
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --bg-code: #1e293b;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --theorem-bg: #eff6ff;
+      --theorem-border: #3b82f6;
+      --definition-bg: #f0fdf4;
+      --definition-border: #22c55e;
+      --example-bg: #fefce8;
+      --example-border: #eab308;
+      --proof-bg: #faf5ff;
+      --proof-border: #a855f7;
+      --admonition-note: #3b82f6;
+      --admonition-warning: #f59e0b;
+      --admonition-tip: #22c55e;
+      --admonition-important: #a855f7;
+      --admonition-caution: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .document-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 3rem 2rem;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+    }
+
+    .document-header h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+
+    .document-header .version {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .document-header .description {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      max-width: 800px;
+    }
+
+    /* Demo Panel */
+    .demo-panel {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 2rem 0;
+      overflow: hidden;
+    }
+
+    .demo-panel-header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .demo-panel-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .demo-panel-header .badge {
+      background: var(--primary);
+      color: white;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .demo-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    @media (max-width: 900px) {
+      .demo-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .demo-source, .demo-rendered {
+      padding: 1.5rem;
+    }
+
+    .demo-source {
+      background: var(--bg-code);
+      border-right: 1px solid var(--border);
+    }
+
+    .demo-source-label, .demo-rendered-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .demo-source-label {
+      color: #94a3b8;
+    }
+
+    .demo-rendered-label {
+      color: var(--text-muted);
+    }
+
+    .demo-source pre {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow-x: auto;
+    }
+
+    .demo-source code {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    /* Syntax Highlighting */
+    .token-directive { color: #f472b6; }
+    .token-attr { color: #7dd3fc; }
+    .token-string { color: #86efac; }
+    .token-slot { color: #fcd34d; font-weight: 600; }
+    .token-comment { color: #64748b; font-style: italic; }
+    .token-keyword { color: #c4b5fd; }
+    .token-heading { color: #67e8f9; font-weight: 600; }
+
+    /* Sections */
+    section {
+      margin: 2rem 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--text);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1.125rem; }
+
+    p {
+      margin: 1rem 0;
+    }
+
+    /* VERA Entities */
+    .vera-entity {
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .vera-entity-header {
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .vera-entity-header .entity-type {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.8;
+    }
+
+    .vera-entity-header .entity-id {
+      font-family: monospace;
+      font-size: 0.75rem;
+      background: rgba(0,0,0,0.1);
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .vera-entity-body {
+      padding: 1rem 1.25rem;
+    }
+
+    /* Theorem Block */
+    .vera-theorem {
+      background: var(--theorem-bg);
+      border-left: 4px solid var(--theorem-border);
+    }
+
+    .vera-theorem .vera-entity-header {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--theorem-border);
+    }
+
+    .vera-theorem .statement {
+      font-style: italic;
+    }
+
+    .vera-theorem .proof {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--theorem-border);
+    }
+
+    .vera-theorem .proof-label {
+      font-weight: 600;
+      font-style: italic;
+      color: var(--theorem-border);
+    }
+
+    /* Definition Block */
+    .vera-definition {
+      background: var(--definition-bg);
+      border-left: 4px solid var(--definition-border);
+    }
+
+    .vera-definition .vera-entity-header {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--definition-border);
+    }
+
+    .vera-definition .def-name {
+      font-weight: 700;
+      color: var(--definition-border);
+    }
+
+    /* Example Block */
+    .vera-example {
+      background: var(--example-bg);
+      border-left: 4px solid var(--example-border);
+    }
+
+    .vera-example .vera-entity-header {
+      background: rgba(234, 179, 8, 0.1);
+      color: #a16207;
+    }
+
+    .vera-example .problem {
+      margin-bottom: 1rem;
+    }
+
+    .vera-example .solution {
+      padding-top: 1rem;
+      border-top: 1px dashed var(--example-border);
+    }
+
+    .vera-example .solution-label {
+      font-weight: 600;
+      color: #a16207;
+    }
+
+    /* Code Block */
+    .vera-code {
+      background: var(--bg-code);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .vera-code .vera-entity-header {
+      background: rgba(255,255,255,0.05);
+      color: #94a3b8;
+    }
+
+    .vera-code pre {
+      margin: 0;
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+    }
+
+    .vera-code code {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.875rem;
+      color: #e2e8f0;
+    }
+
+    /* Admonition */
+    .vera-admonition {
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .vera-admonition.note {
+      background: #eff6ff;
+      border-left: 4px solid var(--admonition-note);
+    }
+
+    .vera-admonition.note .vera-entity-header {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--admonition-note);
+    }
+
+    .vera-admonition.warning {
+      background: #fffbeb;
+      border-left: 4px solid var(--admonition-warning);
+    }
+
+    .vera-admonition.warning .vera-entity-header {
+      background: rgba(245, 158, 11, 0.1);
+      color: #b45309;
+    }
+
+    .vera-admonition.tip {
+      background: #f0fdf4;
+      border-left: 4px solid var(--admonition-tip);
+    }
+
+    .vera-admonition.tip .vera-entity-header {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--admonition-tip);
+    }
+
+    .vera-admonition.important {
+      background: #faf5ff;
+      border-left: 4px solid var(--admonition-important);
+    }
+
+    .vera-admonition.important .vera-entity-header {
+      background: rgba(168, 85, 247, 0.1);
+      color: var(--admonition-important);
+    }
+
+    /* Quote Block */
+    .vera-quote {
+      background: var(--bg-alt);
+      border-left: 4px solid var(--secondary);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .vera-quote blockquote {
+      margin: 0;
+      font-size: 1.125rem;
+      font-style: italic;
+      color: var(--text);
+    }
+
+    .vera-quote .attribution {
+      margin-top: 1rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Table Block */
+    .vera-table {
+      margin: 1.5rem 0;
+    }
+
+    .vera-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .vera-table th, .vera-table td {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .vera-table th {
+      background: var(--bg-alt);
+      font-weight: 600;
+    }
+
+    .vera-table caption {
+      caption-side: bottom;
+      padding: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Figure Block */
+    .vera-figure {
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+
+    .vera-figure img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+
+    .vera-figure figcaption {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Timeline Block */
+    .vera-timeline {
+      margin: 1.5rem 0;
+      padding-left: 2rem;
+      border-left: 2px solid var(--border);
+    }
+
+    .vera-timeline .event {
+      position: relative;
+      padding: 1rem 0 1rem 1.5rem;
+    }
+
+    .vera-timeline .event::before {
+      content: '';
+      position: absolute;
+      left: -2.35rem;
+      top: 1.25rem;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+    }
+
+    .vera-timeline .event-date {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .vera-timeline .event-content {
+      margin-top: 0.25rem;
+    }
+
+    /* Reference */
+    .vera-reference {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 0.75rem 0;
+    }
+
+    .vera-reference .cite-key {
+      font-family: monospace;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .vera-reference .title {
+      font-style: italic;
+    }
+
+    .vera-reference .authors {
+      color: var(--text-muted);
+    }
+
+    /* Section Numbering */
+    .section-number {
+      color: var(--primary);
+      margin-right: 0.5rem;
+    }
+
+    /* Inline Elements */
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code:not(pre code) {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875em;
+      background: var(--bg-alt);
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* Math (simulated) */
+    .math {
+      font-family: 'Times New Roman', serif;
+      font-style: italic;
+    }
+
+    .math-block {
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.125rem;
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .toc h2 {
+      margin-top: 0;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc li {
+      padding: 0.25rem 0;
+    }
+
+    .toc a {
+      color: var(--text);
+    }
+
+    .toc .toc-h2 { padding-left: 0; }
+    .toc .toc-h3 { padding-left: 1rem; font-size: 0.9375rem; }
+    .toc .toc-h4 { padding-left: 2rem; font-size: 0.875rem; color: var(--text-muted); }
+
+    /* Provenance Badge */
+    .provenance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.6875rem;
+      padding: 0.125rem 0.5rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-muted);
+    }
+
+    .provenance-badge.verified {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    .confidence-bar {
+      display: inline-block;
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .confidence-bar .fill {
+      height: 100%;
+      background: var(--success);
+    }
+
+    /* Footer */
+    .document-footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Additional Entity Styles */
+
+    /* Abstract Block */
+    .vera-abstract {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+
+    .vera-abstract .vera-entity-header {
+      font-style: normal;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Proof Block (standalone) */
+    .vera-proof {
+      background: var(--proof-bg);
+      border-left: 4px solid var(--proof-border);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .vera-proof .vera-entity-header {
+      background: rgba(168, 85, 247, 0.1);
+      color: var(--proof-border);
+    }
+
+    /* Guarantee Block */
+    .vera-guarantee {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px solid #10b981;
+      border-radius: 8px;
+    }
+
+    .vera-guarantee .vera-entity-header {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+
+    .vera-guarantee .property {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #047857;
+    }
+
+    /* Operation Block (API) */
+    .vera-operation {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .vera-operation .vera-entity-header {
+      background: #1e293b;
+      color: white;
+    }
+
+    .vera-operation .method-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .vera-operation .method-badge.get { background: #22c55e; color: white; }
+    .vera-operation .method-badge.post { background: #3b82f6; color: white; }
+    .vera-operation .method-badge.put { background: #f59e0b; color: white; }
+    .vera-operation .method-badge.delete { background: #ef4444; color: white; }
+
+    .vera-operation .endpoint {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    /* Exercise Block */
+    .vera-exercise {
+      background: #fef3c7;
+      border-left: 4px solid #d97706;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .vera-exercise .vera-entity-header {
+      background: rgba(217, 119, 6, 0.1);
+      color: #b45309;
+    }
+
+    .vera-exercise .points {
+      background: #fbbf24;
+      color: #78350f;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    /* Profile Block */
+    .vera-profile {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .vera-profile .vera-entity-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1rem 1.25rem;
+    }
+
+    .vera-profile .profile-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .vera-profile .attributes-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .vera-profile .attributes-table td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .vera-profile .attributes-table td:first-child {
+      font-weight: 600;
+      width: 35%;
+      color: var(--text-muted);
+    }
+
+    /* Figure Block */
+    .vera-figure-block {
+      margin: 1.5rem 0;
+      text-align: center;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .vera-figure-block img {
+      max-width: 100%;
+      border-radius: 6px;
+    }
+
+    .vera-figure-block figcaption {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Result Block */
+    .vera-result {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+    }
+
+    .vera-result .vera-entity-header {
+      background: rgba(59, 130, 246, 0.1);
+      color: #1d4ed8;
+    }
+
+    .vera-result .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1d4ed8;
+    }
+
+    .vera-result .metric-name {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .vera-result .variance {
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+
+    /* Comparison Block */
+    .vera-comparison {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .vera-comparison .vera-entity-header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .vera-comparison .winner-badge {
+      background: #22c55e;
+      color: white;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Dialogue Block */
+    .vera-dialogue {
+      background: var(--bg-alt);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 0.75rem 0;
+    }
+
+    .vera-dialogue .speaker {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .vera-dialogue .direction {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Verse Block */
+    .vera-verse {
+      background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+      border-left: 4px solid #c026d3;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .vera-verse .title {
+      font-weight: 700;
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .vera-verse .stanza {
+      white-space: pre-line;
+      font-style: italic;
+      line-height: 1.8;
+      margin: 1rem 0;
+    }
+
+    .vera-verse .attribution {
+      text-align: right;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-top: 1rem;
+    }
+
+    /* Letter Block */
+    .vera-letter {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-family: 'Georgia', serif;
+    }
+
+    .vera-letter .salutation {
+      margin-bottom: 1rem;
+    }
+
+    .vera-letter .body {
+      margin: 1rem 0;
+      line-height: 1.8;
+    }
+
+    .vera-letter .closing {
+      margin-top: 1.5rem;
+    }
+
+    .vera-letter .signature {
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    .vera-letter .date {
+      text-align: right;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Enum Def */
+    .vera-enum {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+    }
+
+    .vera-enum .vera-entity-header {
+      background: rgba(245, 158, 11, 0.1);
+      color: #b45309;
+    }
+
+    .vera-enum .variant-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+    }
+
+    .vera-enum .variant {
+      background: white;
+      border: 1px solid #fcd34d;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+    }
+
+    /* Function Def */
+    .vera-function {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+    }
+
+    .vera-function .vera-entity-header {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+
+    .vera-function .signature {
+      font-family: monospace;
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      overflow-x: auto;
+    }
+
+    /* Predicate Def */
+    .vera-predicate {
+      background: #f0f9ff;
+      border-left: 4px solid #0ea5e9;
+    }
+
+    .vera-predicate .vera-entity-header {
+      background: rgba(14, 165, 233, 0.1);
+      color: #0284c7;
+    }
+
+    .vera-predicate .formula {
+      font-family: 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 1.125rem;
+      text-align: center;
+      padding: 1rem;
+      background: white;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+    }
+
+    /* Axiom Def */
+    .vera-axiom {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-left: 4px solid #ef4444;
+    }
+
+    .vera-axiom .vera-entity-header {
+      background: rgba(239, 68, 68, 0.1);
+      color: #dc2626;
+    }
+
+    .vera-axiom .statement {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    /* Rule Def */
+    .vera-rule {
+      background: #f5f3ff;
+      border-left: 4px solid #8b5cf6;
+    }
+
+    .vera-rule .vera-entity-header {
+      background: rgba(139, 92, 246, 0.1);
+      color: #7c3aed;
+    }
+
+    .vera-rule .inference {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .vera-rule .premises {
+      margin-bottom: 0.5rem;
+    }
+
+    .vera-rule .rule-line {
+      border-top: 2px solid #8b5cf6;
+      width: 80%;
+      margin: 0.5rem auto;
+    }
+
+    .vera-rule .conclusion {
+      font-weight: 600;
+    }
+
+    /* Grammar Def */
+    .vera-grammar {
+      background: #fefce8;
+      border-left: 4px solid #ca8a04;
+    }
+
+    .vera-grammar .vera-entity-header {
+      background: rgba(202, 138, 4, 0.1);
+      color: #a16207;
+    }
+
+    .vera-grammar .productions {
+      font-family: monospace;
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    /* Judgment Def */
+    .vera-judgment {
+      background: #f0fdfa;
+      border-left: 4px solid #14b8a6;
+    }
+
+    .vera-judgment .vera-entity-header {
+      background: rgba(20, 184, 166, 0.1);
+      color: #0d9488;
+    }
+
+    .vera-judgment .form {
+      font-family: 'Times New Roman', serif;
+      font-size: 1.25rem;
+      text-align: center;
+      padding: 1rem;
+      background: white;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+    }
+
+    /* Proof Step (supporting) */
+    .vera-proof-step {
+      background: white;
+      border: 1px solid #e9d5ff;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .vera-proof-step .step-number {
+      background: var(--proof-border);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .vera-proof-step .step-method {
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--proof-border);
+      font-weight: 600;
+    }
+
+    /* Section block explicit */
+    .vera-section {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .vera-section .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .vera-section .section-level {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Document Header (from frontmatter) -->
+  <header class="document-header">
+    <span class="version">v0.9.2</span>
+    <h1>VERA Specification RFC</h1>
+    <p class="description">A semantic entity schema integrated with Markdown AST for structured documents.</p>
+  </header>
+
+  <!-- Table of Contents -->
+  <nav class="toc">
+    <h2>Contents</h2>
+    <ul>
+      <li class="toc-h2"><a href="#overview"><span class="section-number">1</span> Overview</a></li>
+      <li class="toc-h3"><a href="#design-mission"><span class="section-number">1.1</span> Design Mission</a></li>
+      <li class="toc-h2"><a href="#entity-showcase"><span class="section-number">2</span> Entity Showcase</a></li>
+      <li class="toc-h3"><a href="#theorems"><span class="section-number">2.1</span> Theorems &amp; Proofs</a></li>
+      <li class="toc-h3"><a href="#definitions"><span class="section-number">2.2</span> Definitions</a></li>
+      <li class="toc-h3"><a href="#examples"><span class="section-number">2.3</span> Examples</a></li>
+      <li class="toc-h3"><a href="#code"><span class="section-number">2.4</span> Code Blocks</a></li>
+      <li class="toc-h3"><a href="#admonitions"><span class="section-number">2.5</span> Admonitions</a></li>
+      <li class="toc-h3"><a href="#references"><span class="section-number">2.6</span> References</a></li>
+    </ul>
+  </nav>
+
+  <!-- Section 1: Overview -->
+  <section id="overview">
+    <h1><span class="section-number">1</span> Overview</h1>
+
+    <p>VERA extends the Markdown AST with semantic entities that represent concepts beyond standard syntax—theorems, API operations, type definitions, and more. Entities are expressed as <strong>directives</strong> within the Markdown content model.</p>
+
+    <section id="design-mission">
+      <h2><span class="section-number">1.1</span> Design Mission</h2>
+
+      <p>VERA serves four primary purposes:</p>
+
+      <ol>
+        <li><strong>Extraction</strong> — Transform unstructured documents into structured, machine-readable Markdown</li>
+        <li><strong>Interchange</strong> — Semantic entities survive format conversions</li>
+        <li><strong>Formal Fidelity</strong> — Preserve formal structure precisely enough for verification tools</li>
+        <li><strong>Incremental Enrichment</strong> — Start with plain Markdown, progressively add semantic structure</li>
+      </ol>
+    </section>
+  </section>
+
+  <!-- Section 2: Entity Showcase -->
+  <section id="entity-showcase">
+    <h1><span class="section-number">2</span> Entity Showcase</h1>
+
+    <p>The following examples demonstrate how VERA entities appear in both source (Markdown with directives) and rendered form.</p>
+
+    <!-- 2.1 Theorems -->
+    <section id="theorems">
+      <h2><span class="section-number">2.1</span> Theorems &amp; Proofs</h2>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Theorem Block</h3>
+          <span class="badge">theorem_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Source (VERA Markdown)
+            </div>
+            <pre><code><span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-fund</span> <span class="token-attr">variant</span>=<span class="token-string">"theorem"</span> <span class="token-attr">sourceLoc</span>=<span class="token-string">"p.42"</span> <span class="token-attr">confidence</span>=<span class="token-string">0.97</span>}
+<span class="token-slot">#statement</span>
+Every natural number greater than 1 can be
+represented as a product of prime numbers,
+uniquely up to the order of the factors.
+
+<span class="token-slot">#proof</span>
+<span class="token-keyword">**Existence:**</span> By strong induction on $n$.
+Base case $n=2$ is prime.
+Inductive step: If $n$ is prime, done.
+Otherwise $n = ab$ where $1 &lt; a,b &lt; n$.
+By IH, both factor into primes.
+
+<span class="token-keyword">**Uniqueness:**</span> Suppose two factorizations.
+Apply Euclid's lemma repeatedly. ∎
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              Rendered Output
+            </div>
+            <div class="vera-entity vera-theorem">
+              <div class="vera-entity-header">
+                <span class="entity-type">Theorem</span>
+                <span class="entity-id">#thm-fund</span>
+                <span class="provenance-badge">
+                  <span class="confidence-bar"><span class="fill" style="width: 97%"></span></span>
+                  97%
+                </span>
+                <span class="provenance-badge">p.42</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="statement">
+                  Every natural number greater than 1 can be represented as a product of prime numbers, uniquely up to the order of the factors.
+                </div>
+                <div class="proof">
+                  <span class="proof-label">Proof.</span>
+                  <p><strong>Existence:</strong> By strong induction on <span class="math">n</span>. Base case <span class="math">n=2</span> is prime. Inductive step: If <span class="math">n</span> is prime, done. Otherwise <span class="math">n = ab</span> where <span class="math">1 &lt; a,b &lt; n</span>. By IH, both factor into primes.</p>
+                  <p><strong>Uniqueness:</strong> Suppose two factorizations. Apply Euclid's lemma repeatedly. ∎</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lemma Example -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Lemma (Theorem Variant)</h3>
+          <span class="badge">theorem_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::lemma</span>{<span class="token-attr">#lem-euclid</span> <span class="token-attr">alias</span>=<span class="token-string">"euclids-lemma"</span>}
+<span class="token-slot">#statement</span>
+If a prime $p$ divides $ab$, then $p$
+divides $a$ or $p$ divides $b$.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-theorem">
+              <div class="vera-entity-header">
+                <span class="entity-type">Lemma</span>
+                <span class="entity-id">#lem-euclid</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="statement">
+                  If a prime <span class="math">p</span> divides <span class="math">ab</span>, then <span class="math">p</span> divides <span class="math">a</span> or <span class="math">p</span> divides <span class="math">b</span>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.2 Definitions -->
+    <section id="definitions">
+      <h2><span class="section-number">2.2</span> Definitions</h2>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Term Definition</h3>
+          <span class="badge">term_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::term_def</span>{<span class="token-attr">#def-prime</span> <span class="token-attr">defName</span>=<span class="token-string">"Prime Number"</span>}
+<span class="token-slot">#_description</span>
+A natural number greater than 1 that has no
+positive divisors other than 1 and itself.
+
+<span class="token-slot">#examples</span>
+The first few primes are: 2, 3, 5, 7, 11, 13...
+
+<span class="token-slot">#see_also</span>
+- [Composite Number](#def-composite)
+- [Fundamental Theorem](#thm-fund)
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-definition">
+              <div class="vera-entity-header">
+                <span class="entity-type">Definition</span>
+                <span class="def-name">Prime Number</span>
+                <span class="entity-id">#def-prime</span>
+              </div>
+              <div class="vera-entity-body">
+                <p>A natural number greater than 1 that has no positive divisors other than 1 and itself.</p>
+                <p><strong>Examples:</strong> The first few primes are: 2, 3, 5, 7, 11, 13...</p>
+                <p><strong>See also:</strong> <a href="#def-composite">Composite Number</a>, <a href="#thm-fund">Fundamental Theorem</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Type Definition</h3>
+          <span class="badge">type_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::type_def</span>{<span class="token-attr">#type-result</span> <span class="token-attr">defName</span>=<span class="token-string">"Result"</span> <span class="token-attr">params</span>=<span class="token-string">"T, E"</span>}
+<span class="token-slot">#_description</span>
+A discriminated union representing either
+a successful value of type `T` or an error
+of type `E`.
+
+```typescript
+type Result&lt;T, E&gt; =
+  | { ok: true; value: T }
+  | { ok: false; error: E };
+```
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-definition">
+              <div class="vera-entity-header">
+                <span class="entity-type">Type</span>
+                <span class="def-name">Result&lt;T, E&gt;</span>
+                <span class="entity-id">#type-result</span>
+              </div>
+              <div class="vera-entity-body">
+                <p>A discriminated union representing either a successful value of type <code>T</code> or an error of type <code>E</code>.</p>
+                <div class="vera-code">
+                  <pre><code>type Result&lt;T, E&gt; =
+  | { ok: true; value: T }
+  | { ok: false; error: E };</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Notation Definition</h3>
+          <span class="badge">notation_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::notation_def</span>{<span class="token-attr">#not-forall</span> <span class="token-attr">symbol</span>=<span class="token-string">"∀"</span> <span class="token-attr">latex</span>=<span class="token-string">"\\forall"</span>}
+<span class="token-slot">#_description</span>
+Universal quantifier. "$\forall x. P(x)$" reads
+as "for all $x$, property $P$ holds".
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-definition">
+              <div class="vera-entity-header">
+                <span class="entity-type">Notation</span>
+                <span class="def-name" style="font-size: 1.5rem;">∀</span>
+                <span class="entity-id">#not-forall</span>
+              </div>
+              <div class="vera-entity-body">
+                <p>Universal quantifier. "<span class="math">∀x. P(x)</span>" reads as "for all <span class="math">x</span>, property <span class="math">P</span> holds".</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.3 Examples -->
+    <section id="examples">
+      <h2><span class="section-number">2.3</span> Examples &amp; Exercises</h2>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Example Block</h3>
+          <span class="badge">example_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::example</span>{<span class="token-attr">#ex-prime-factor</span> <span class="token-attr">difficulty</span>=<span class="token-string">"beginner"</span>}
+<span class="token-slot">#problem</span>
+Find the prime factorization of 84.
+
+<span class="token-slot">#hints</span>
+<span class="token-directive">:::hint</span>{<span class="token-attr">#hint-1</span> <span class="token-attr">level</span>=<span class="token-string">1</span>}
+Start by dividing by the smallest prime, 2.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::hint</span>{<span class="token-attr">#hint-2</span> <span class="token-attr">level</span>=<span class="token-string">2</span>}
+After dividing by 2 twice, try 3.
+<span class="token-directive">:::</span>
+
+<span class="token-slot">#solution</span>
+$$84 = 2^2 \times 3 \times 7$$
+
+Step by step:
+- $84 ÷ 2 = 42$
+- $42 ÷ 2 = 21$
+- $21 ÷ 3 = 7$
+- $7$ is prime ✓
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-example">
+              <div class="vera-entity-header">
+                <span class="entity-type">Example</span>
+                <span class="entity-id">#ex-prime-factor</span>
+                <span class="provenance-badge">beginner</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="problem">
+                  <strong>Problem:</strong> Find the prime factorization of 84.
+                </div>
+                <details style="margin: 0.75rem 0; cursor: pointer;">
+                  <summary style="color: var(--warning); font-weight: 500;">Show Hint 1</summary>
+                  <p style="padding-left: 1rem; border-left: 2px solid var(--example-border); margin-top: 0.5rem;">Start by dividing by the smallest prime, 2.</p>
+                </details>
+                <details style="margin: 0.75rem 0; cursor: pointer;">
+                  <summary style="color: var(--warning); font-weight: 500;">Show Hint 2</summary>
+                  <p style="padding-left: 1rem; border-left: 2px solid var(--example-border); margin-top: 0.5rem;">After dividing by 2 twice, try 3.</p>
+                </details>
+                <div class="solution">
+                  <span class="solution-label">Solution:</span>
+                  <div class="math-block">84 = 2² × 3 × 7</div>
+                  <p>Step by step:</p>
+                  <ul>
+                    <li>84 ÷ 2 = 42</li>
+                    <li>42 ÷ 2 = 21</li>
+                    <li>21 ÷ 3 = 7</li>
+                    <li>7 is prime ✓</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.4 Code -->
+    <section id="code">
+      <h2><span class="section-number">2.4</span> Code Blocks</h2>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Code Block</h3>
+          <span class="badge">code_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::code_block</span>{<span class="token-attr">#code-isprime</span> <span class="token-attr">language</span>=<span class="token-string">"python"</span> <span class="token-attr">executable</span>=<span class="token-string">true</span>}
+<span class="token-slot">#source</span>
+```python
+def is_prime(n: int) -> bool:
+    """Check if n is prime."""
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+# Test
+print([n for n in range(20) if is_prime(n)])
+```
+
+<span class="token-slot">#output</span>
+```
+[2, 3, 5, 7, 11, 13, 17, 19]
+```
+
+<span class="token-slot">#caption</span>
+A simple primality test using trial division.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-code">
+              <div class="vera-entity-header">
+                <span class="entity-type">Python</span>
+                <span class="entity-id">#code-isprime</span>
+                <span class="provenance-badge" style="background: #dcfce7; color: #166534;">executable</span>
+              </div>
+              <pre><code><span style="color: #c4b5fd;">def</span> <span style="color: #7dd3fc;">is_prime</span>(n: <span style="color: #fcd34d;">int</span>) -> <span style="color: #fcd34d;">bool</span>:
+    <span style="color: #86efac;">"""Check if n is prime."""</span>
+    <span style="color: #c4b5fd;">if</span> n < <span style="color: #f472b6;">2</span>:
+        <span style="color: #c4b5fd;">return</span> <span style="color: #f472b6;">False</span>
+    <span style="color: #c4b5fd;">for</span> i <span style="color: #c4b5fd;">in</span> <span style="color: #7dd3fc;">range</span>(<span style="color: #f472b6;">2</span>, <span style="color: #7dd3fc;">int</span>(n**<span style="color: #f472b6;">0.5</span>) + <span style="color: #f472b6;">1</span>):
+        <span style="color: #c4b5fd;">if</span> n % i == <span style="color: #f472b6;">0</span>:
+            <span style="color: #c4b5fd;">return</span> <span style="color: #f472b6;">False</span>
+    <span style="color: #c4b5fd;">return</span> <span style="color: #f472b6;">True</span>
+
+<span style="color: #64748b;"># Test</span>
+<span style="color: #7dd3fc;">print</span>([n <span style="color: #c4b5fd;">for</span> n <span style="color: #c4b5fd;">in</span> <span style="color: #7dd3fc;">range</span>(<span style="color: #f472b6;">20</span>) <span style="color: #c4b5fd;">if</span> is_prime(n)])</code></pre>
+            </div>
+            <div style="background: #0f172a; padding: 0.75rem 1.25rem; border-top: 1px solid #334155;">
+              <div style="font-size: 0.6875rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Output</div>
+              <code style="color: #86efac;">[2, 3, 5, 7, 11, 13, 17, 19]</code>
+            </div>
+            <div style="padding: 0.75rem 1.25rem; background: var(--bg-alt); font-size: 0.875rem; color: var(--text-muted); font-style: italic;">
+              A simple primality test using trial division.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.5 Admonitions -->
+    <section id="admonitions">
+      <h2><span class="section-number">2.5</span> Admonitions</h2>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Admonition Variants</h3>
+          <span class="badge">admonition_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::note</span>{<span class="token-attr">#note-convention</span>}
+Throughout this document, we use $\mathbb{N}$
+to denote natural numbers including zero.
+<span class="token-directive">:::</span>
+
+<span class="token-directive">:::warning</span>{<span class="token-attr">#warn-edge</span>}
+The algorithm fails for $n = 1$ because 1
+is neither prime nor composite.
+<span class="token-directive">:::</span>
+
+<span class="token-directive">:::tip</span>{<span class="token-attr">#tip-perf</span>}
+For large numbers, use the Miller-Rabin
+probabilistic primality test instead.
+<span class="token-directive">:::</span>
+
+<span class="token-directive">:::important</span>{<span class="token-attr">#imp-unique</span> <span class="token-attr">title</span>=<span class="token-string">"Key Insight"</span>}
+The uniqueness part of the Fundamental
+Theorem requires Euclid's Lemma.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+
+            <div class="vera-entity vera-admonition note">
+              <div class="vera-entity-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                Note
+              </div>
+              <div class="vera-entity-body">
+                Throughout this document, we use <span class="math">ℕ</span> to denote natural numbers including zero.
+              </div>
+            </div>
+
+            <div class="vera-entity vera-admonition warning">
+              <div class="vera-entity-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Warning
+              </div>
+              <div class="vera-entity-body">
+                The algorithm fails for <span class="math">n = 1</span> because 1 is neither prime nor composite.
+              </div>
+            </div>
+
+            <div class="vera-entity vera-admonition tip">
+              <div class="vera-entity-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                Tip
+              </div>
+              <div class="vera-entity-body">
+                For large numbers, use the Miller-Rabin probabilistic primality test instead.
+              </div>
+            </div>
+
+            <div class="vera-entity vera-admonition important">
+              <div class="vera-entity-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Key Insight
+              </div>
+              <div class="vera-entity-body">
+                The uniqueness part of the Fundamental Theorem requires Euclid's Lemma.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2.6 References -->
+    <section id="references">
+      <h2><span class="section-number">2.6</span> References &amp; Citations</h2>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Reference Definition</h3>
+          <span class="badge">reference_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::reference_def</span>{<span class="token-attr">#ref-hardy</span> <span class="token-attr">citeKey</span>=<span class="token-string">"hardy1979"</span> <span class="token-attr">type</span>=<span class="token-string">"book"</span>}
+<span class="token-attr">authors</span>=<span class="token-string">"Hardy, G. H.; Wright, E. M."</span>
+<span class="token-attr">title</span>=<span class="token-string">"An Introduction to the Theory of Numbers"</span>
+<span class="token-attr">publisher</span>=<span class="token-string">"Oxford University Press"</span>
+<span class="token-attr">year</span>=<span class="token-string">1979</span>
+<span class="token-attr">isbn</span>=<span class="token-string">"978-0-19-853171-5"</span>
+
+<span class="token-slot">#_description</span>
+The classic reference for elementary number
+theory. Chapter 1 covers prime numbers.
+<span class="token-directive">:::</span>
+
+<span class="token-comment">&lt;!-- Usage in text --&gt;</span>
+See Hardy &amp; Wright [<span class="token-attr">#ref-hardy</span>] for
+a comprehensive treatment.</code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-reference">
+              <div>
+                <span class="cite-key">[hardy1979]</span>
+              </div>
+              <div class="authors" style="margin-top: 0.25rem;">Hardy, G. H.; Wright, E. M.</div>
+              <div class="title" style="margin-top: 0.25rem;">"An Introduction to the Theory of Numbers"</div>
+              <div style="margin-top: 0.25rem; font-size: 0.875rem;">
+                Oxford University Press, 1979
+              </div>
+              <div style="margin-top: 0.5rem; font-size: 0.8125rem; color: var(--text-muted);">
+                The classic reference for elementary number theory. Chapter 1 covers prime numbers.
+              </div>
+            </div>
+            <p style="margin-top: 1rem;">
+              See Hardy &amp; Wright <a href="#ref-hardy">[hardy1979]</a> for a comprehensive treatment.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- More Entity Types -->
+    <section id="more-entities">
+      <h2><span class="section-number">2.7</span> More Entity Types</h2>
+
+      <!-- Quote Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Quote Block</h3>
+          <span class="badge">quote_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::quote</span>{<span class="token-attr">#quote-euclid</span> <span class="token-attr">speaker</span>=<span class="token-string">"Euclid"</span> <span class="token-attr">source</span>=<span class="token-string">"Elements"</span>}
+There are infinitely many prime numbers.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-quote">
+              <blockquote>"There are infinitely many prime numbers."</blockquote>
+              <div class="attribution">— Euclid, <em>Elements</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Table Block</h3>
+          <span class="badge">table_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::table_block</span>{<span class="token-attr">#tbl-primes</span>}
+<span class="token-slot">#caption</span>
+First 10 prime numbers and their properties
+
+<span class="token-slot">#_content</span>
+| n | Prime | Digits | Twin? |
+|---|-------|--------|-------|
+| 1 | 2     | 1      | No    |
+| 2 | 3     | 1      | Yes   |
+| 3 | 5     | 1      | Yes   |
+| 4 | 7     | 1      | Yes   |
+| 5 | 11    | 2      | Yes   |
+| 6 | 13    | 2      | Yes   |
+| 7 | 17    | 2      | Yes   |
+| 8 | 19    | 2      | Yes   |
+| 9 | 23    | 2      | No    |
+| 10| 29    | 2      | Yes   |
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-table">
+              <table>
+                <thead>
+                  <tr><th>n</th><th>Prime</th><th>Digits</th><th>Twin?</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>2</td><td>1</td><td>No</td></tr>
+                  <tr><td>2</td><td>3</td><td>1</td><td>Yes</td></tr>
+                  <tr><td>3</td><td>5</td><td>1</td><td>Yes</td></tr>
+                  <tr><td>4</td><td>7</td><td>1</td><td>Yes</td></tr>
+                  <tr><td>5</td><td>11</td><td>2</td><td>Yes</td></tr>
+                  <tr><td>6</td><td>13</td><td>2</td><td>Yes</td></tr>
+                  <tr><td>7</td><td>17</td><td>2</td><td>Yes</td></tr>
+                  <tr><td>8</td><td>19</td><td>2</td><td>Yes</td></tr>
+                  <tr><td>9</td><td>23</td><td>2</td><td>No</td></tr>
+                  <tr><td>10</td><td>29</td><td>2</td><td>Yes</td></tr>
+                </tbody>
+                <caption>First 10 prime numbers and their properties</caption>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Timeline Block</h3>
+          <span class="badge">timeline_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::timeline_block</span>{<span class="token-attr">#timeline-primes</span> <span class="token-attr">title</span>=<span class="token-string">"History of Prime Numbers"</span>}
+<span class="token-slot">#events</span>
+<span class="token-directive">:::event</span>{<span class="token-attr">#evt-euclid</span> <span class="token-attr">date</span>=<span class="token-string">"-300"</span>}
+Euclid proves infinitude of primes in *Elements*.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::event</span>{<span class="token-attr">#evt-eratosthenes</span> <span class="token-attr">date</span>=<span class="token-string">"-240"</span>}
+Eratosthenes develops his famous sieve algorithm.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::event</span>{<span class="token-attr">#evt-fermat</span> <span class="token-attr">date</span>=<span class="token-string">"1640"</span>}
+Fermat states his Little Theorem.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::event</span>{<span class="token-attr">#evt-euler</span> <span class="token-attr">date</span>=<span class="token-string">"1737"</span>}
+Euler proves Fermat's Little Theorem.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <h4 style="margin-top: 0;">History of Prime Numbers</h4>
+            <div class="vera-timeline">
+              <div class="event">
+                <div class="event-date">~300 BCE</div>
+                <div class="event-content">Euclid proves infinitude of primes in <em>Elements</em>.</div>
+              </div>
+              <div class="event">
+                <div class="event-date">~240 BCE</div>
+                <div class="event-content">Eratosthenes develops his famous sieve algorithm.</div>
+              </div>
+              <div class="event">
+                <div class="event-date">1640</div>
+                <div class="event-content">Fermat states his Little Theorem.</div>
+              </div>
+              <div class="event">
+                <div class="event-date">1737</div>
+                <div class="event-content">Euler proves Fermat's Little Theorem.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diagram Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Diagram Block</h3>
+          <span class="badge">diagram_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::diagram_block</span>{<span class="token-attr">#diag-factor</span> <span class="token-attr">notation</span>=<span class="token-string">"mermaid"</span> <span class="token-attr">alt</span>=<span class="token-string">"Factor tree for 84"</span>}
+<span class="token-slot">#source</span>
+```mermaid
+graph TD
+    A[84] --> B[2]
+    A --> C[42]
+    C --> D[2]
+    C --> E[21]
+    E --> F[3]
+    E --> G[7]
+```
+
+<span class="token-slot">#caption</span>
+Prime factorization tree showing 84 = 2² × 3 × 7
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-figure">
+              <svg width="300" height="200" viewBox="0 0 300 200" style="font-family: sans-serif; font-size: 14px;">
+                <!-- 84 at top -->
+                <rect x="125" y="10" width="50" height="30" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <text x="150" y="30" text-anchor="middle" font-weight="bold">84</text>
+
+                <!-- Lines down -->
+                <line x1="135" y1="40" x2="80" y2="70" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="165" y1="40" x2="220" y2="70" stroke="#94a3b8" stroke-width="2"/>
+
+                <!-- 2 and 42 -->
+                <circle cx="80" cy="85" r="18" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <text x="80" y="90" text-anchor="middle" font-weight="bold">2</text>
+
+                <rect x="195" y="70" width="50" height="30" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <text x="220" y="90" text-anchor="middle" font-weight="bold">42</text>
+
+                <!-- Lines from 42 -->
+                <line x1="205" y1="100" x2="150" y2="130" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="235" y1="100" x2="270" y2="130" stroke="#94a3b8" stroke-width="2"/>
+
+                <!-- 2 and 21 -->
+                <circle cx="150" cy="145" r="18" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <text x="150" y="150" text-anchor="middle" font-weight="bold">2</text>
+
+                <rect x="245" y="130" width="50" height="30" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                <text x="270" y="150" text-anchor="middle" font-weight="bold">21</text>
+
+                <!-- Lines from 21 -->
+                <line x1="255" y1="160" x2="220" y2="185" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="285" y1="160" x2="270" y2="185" stroke="#94a3b8" stroke-width="2"/>
+
+                <!-- 3 and 7 -->
+                <circle cx="220" cy="185" r="15" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <text x="220" y="190" text-anchor="middle" font-weight="bold">3</text>
+
+                <circle cx="270" cy="185" r="15" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                <text x="270" y="190" text-anchor="middle" font-weight="bold">7</text>
+              </svg>
+              <figcaption>Prime factorization tree showing 84 = 2² × 3 × 7</figcaption>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Section Block</h3>
+          <span class="badge">section_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::section</span>{<span class="token-attr">#sec-methods</span> <span class="token-attr">title</span>=<span class="token-string">"$_ Methods"</span> <span class="token-attr">numbering</span>=<span class="token-string">"numeric"</span>}
+This section describes our methodology.
+
+<span class="token-directive">:::section</span>{<span class="token-attr">#sec-data</span> <span class="token-attr">title</span>=<span class="token-string">"$_ Data Collection"</span>}
+We collected data from various sources...
+<span class="token-directive">:::</span>
+
+<span class="token-directive">:::section</span>{<span class="token-attr">#sec-analysis</span> <span class="token-attr">title</span>=<span class="token-string">"$_ Analysis"</span>}
+Statistical analysis was performed...
+<span class="token-directive">:::</span>
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-section">
+              <div class="section-level">Level 1</div>
+              <div class="section-title">2 Methods</div>
+              <p>This section describes our methodology.</p>
+              <div class="vera-section" style="margin-left: 1rem; border-color: #cbd5e1;">
+                <div class="section-level">Level 2</div>
+                <div class="section-title" style="font-size: 1.1rem;">2.1 Data Collection</div>
+                <p style="margin: 0.5rem 0;">We collected data from various sources...</p>
+              </div>
+              <div class="vera-section" style="margin-left: 1rem; border-color: #cbd5e1;">
+                <div class="section-level">Level 2</div>
+                <div class="section-title" style="font-size: 1.1rem;">2.2 Analysis</div>
+                <p style="margin: 0.5rem 0;">Statistical analysis was performed...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Figure Block</h3>
+          <span class="badge">figure_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::figure_block</span>{<span class="token-attr">#fig-sieve</span> <span class="token-attr">src</span>=<span class="token-string">"sieve.png"</span> <span class="token-attr">alt</span>=<span class="token-string">"Sieve of Eratosthenes"</span>}
+<span class="token-slot">#caption</span>
+The Sieve of Eratosthenes for finding primes up to 30.
+Numbers crossed out are composite; remaining are prime.
+
+<span class="token-slot">#components</span>
+- **Green circles**: Prime numbers
+- **Red crosses**: Composite numbers
+- **Gray**: Numbers being processed
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-figure-block">
+              <svg width="320" height="100" viewBox="0 0 320 100" style="font-family: sans-serif;">
+                <!-- Row of numbers 1-10 -->
+                <g transform="translate(10, 10)">
+                  <rect x="0" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="14" y="19" text-anchor="middle" font-size="12" fill="#991b1b">1</text>
+                  <circle cx="44" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="44" y="18" text-anchor="middle" font-size="12" font-weight="bold">2</text>
+                  <circle cx="74" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="74" y="18" text-anchor="middle" font-size="12" font-weight="bold">3</text>
+                  <rect x="88" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="102" y="19" text-anchor="middle" font-size="12" fill="#991b1b">4</text>
+                  <circle cx="134" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="134" y="18" text-anchor="middle" font-size="12" font-weight="bold">5</text>
+                  <rect x="148" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="162" y="19" text-anchor="middle" font-size="12" fill="#991b1b">6</text>
+                  <circle cx="194" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="194" y="18" text-anchor="middle" font-size="12" font-weight="bold">7</text>
+                  <rect x="208" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="222" y="19" text-anchor="middle" font-size="12" fill="#991b1b">8</text>
+                  <rect x="238" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="252" y="19" text-anchor="middle" font-size="12" fill="#991b1b">9</text>
+                  <rect x="268" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="282" y="19" text-anchor="middle" font-size="12" fill="#991b1b">10</text>
+                </g>
+                <!-- Row 11-20 -->
+                <g transform="translate(10, 45)">
+                  <circle cx="14" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="14" y="18" text-anchor="middle" font-size="12" font-weight="bold">11</text>
+                  <rect x="28" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="42" y="19" text-anchor="middle" font-size="12" fill="#991b1b">12</text>
+                  <circle cx="74" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="74" y="18" text-anchor="middle" font-size="12" font-weight="bold">13</text>
+                  <rect x="88" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="102" y="19" text-anchor="middle" font-size="10" fill="#991b1b">14</text>
+                  <rect x="118" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="132" y="19" text-anchor="middle" font-size="10" fill="#991b1b">15</text>
+                  <rect x="148" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="162" y="19" text-anchor="middle" font-size="10" fill="#991b1b">16</text>
+                  <circle cx="194" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="194" y="18" text-anchor="middle" font-size="12" font-weight="bold">17</text>
+                  <rect x="208" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="222" y="19" text-anchor="middle" font-size="10" fill="#991b1b">18</text>
+                  <circle cx="252" cy="14" r="14" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+                  <text x="252" y="18" text-anchor="middle" font-size="12" font-weight="bold">19</text>
+                  <rect x="268" y="0" width="28" height="28" rx="4" fill="#fee2e2" stroke="#ef4444"/>
+                  <text x="282" y="19" text-anchor="middle" font-size="10" fill="#991b1b">20</text>
+                </g>
+              </svg>
+              <figcaption>The Sieve of Eratosthenes for finding primes up to 20</figcaption>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Result Block</h3>
+          <span class="badge">result_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::result_block</span>{<span class="token-attr">#res-accuracy</span>
+  <span class="token-attr">metric</span>=<span class="token-string">"Prime Detection Accuracy"</span>
+  <span class="token-attr">value</span>=<span class="token-string">"99.7%"</span>
+  <span class="token-attr">variance</span>=<span class="token-string">"±0.2%"</span>
+  <span class="token-attr">task</span>=<span class="token-string">"Miller-Rabin Test"</span>
+  <span class="token-attr">n</span>=<span class="token-string">10000</span>}
+<span class="token-slot">#_content</span>
+Tested against known prime tables up to 10^9.
+False positive rate negligible with 40 iterations.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-result">
+              <div class="vera-entity-header">
+                <span class="entity-type">Result</span>
+                <span class="entity-id">#res-accuracy</span>
+                <span class="provenance-badge">n=10,000</span>
+              </div>
+              <div class="vera-entity-body" style="text-align: center; padding: 1.5rem;">
+                <div class="metric-name">Prime Detection Accuracy</div>
+                <div class="metric-value">99.7%</div>
+                <div class="variance">±0.2%</div>
+                <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-muted);">
+                  Task: Miller-Rabin Test
+                </div>
+                <p style="margin-top: 1rem; text-align: left; font-size: 0.9rem;">
+                  Tested against known prime tables up to 10⁹. False positive rate negligible with 40 iterations.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Comparison Block</h3>
+          <span class="badge">comparison_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::comparison_block</span>{<span class="token-attr">#cmp-algorithms</span>
+  <span class="token-attr">subjects</span>=<span class="token-string">"Trial Division, Sieve, Miller-Rabin"</span>
+  <span class="token-attr">winner</span>=<span class="token-string">"Miller-Rabin"</span>}
+<span class="token-slot">#criteria</span>
+| Criterion | Trial Division | Sieve | Miller-Rabin |
+|-----------|---------------|-------|--------------|
+| Time O(n) | O(√n) | O(n log log n) | O(k log³n) |
+| Space | O(1) | O(n) | O(1) |
+| Deterministic | Yes | Yes | No* |
+
+<span class="token-slot">#summary</span>
+Miller-Rabin is preferred for large numbers due to
+its polylogarithmic time complexity.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-comparison">
+              <div class="vera-entity-header">
+                <span class="entity-type">Comparison</span>
+                <span class="entity-id">#cmp-algorithms</span>
+                <span class="winner-badge">Winner: Miller-Rabin</span>
+              </div>
+              <div class="vera-entity-body">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+                  <thead>
+                    <tr style="background: var(--bg);">
+                      <th style="padding: 0.5rem; border: 1px solid var(--border);">Criterion</th>
+                      <th style="padding: 0.5rem; border: 1px solid var(--border);">Trial Division</th>
+                      <th style="padding: 0.5rem; border: 1px solid var(--border);">Sieve</th>
+                      <th style="padding: 0.5rem; border: 1px solid var(--border); background: #dcfce7;">Miller-Rabin</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">Time</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">O(√n)</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">O(n log log n)</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #f0fdf4;">O(k log³n)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">Space</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">O(1)</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">O(n)</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #f0fdf4;">O(1)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">Deterministic</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">Yes</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">Yes</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); background: #f0fdf4;">No*</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p style="margin-top: 1rem; font-style: italic; color: var(--text-muted);">
+                  Miller-Rabin is preferred for large numbers due to its polylogarithmic time complexity.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Abstract Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Abstract Block</h3>
+          <span class="badge">abstract_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::abstract</span>{<span class="token-attr">#abs-main</span>}
+This paper presents a comprehensive survey of
+primality testing algorithms. We compare classical
+methods such as trial division and the Sieve of
+Eratosthenes with modern probabilistic approaches
+including Miller-Rabin and AKS. Our analysis shows
+that for cryptographic applications, probabilistic
+tests offer superior performance.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-abstract">
+              <div class="vera-entity-header">
+                <span class="entity-type">Abstract</span>
+              </div>
+              <div class="vera-entity-body">
+                This paper presents a comprehensive survey of primality testing algorithms. We compare classical methods such as trial division and the Sieve of Eratosthenes with modern probabilistic approaches including Miller-Rabin and AKS. Our analysis shows that for cryptographic applications, probabilistic tests offer superior performance.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proof Block (standalone) -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Proof Block (Standalone)</h3>
+          <span class="badge">proof_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::proof_block</span>{<span class="token-attr">#prf-alt</span> <span class="token-attr">of</span>=<span class="token-string">"#thm-fund"</span> <span class="token-attr">method</span>=<span class="token-string">"contradiction"</span>}
+<span class="token-slot">#_content</span>
+Assume there are only finitely many primes
+$p_1, p_2, \ldots, p_n$.
+
+Consider $N = p_1 \cdot p_2 \cdots p_n + 1$.
+
+$N$ is not divisible by any $p_i$ (remainder 1).
+
+Therefore $N$ is either prime or has a prime
+factor not in our list. Contradiction. ∎
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-proof">
+              <div class="vera-entity-header">
+                <span class="entity-type">Proof</span>
+                <span class="entity-id">#prf-alt</span>
+                <span class="provenance-badge">of #thm-fund</span>
+                <span class="provenance-badge">contradiction</span>
+              </div>
+              <div class="vera-entity-body">
+                <p>Assume there are only finitely many primes <span class="math">p₁, p₂, …, pₙ</span>.</p>
+                <p>Consider <span class="math">N = p₁ · p₂ ⋯ pₙ + 1</span>.</p>
+                <p><span class="math">N</span> is not divisible by any <span class="math">pᵢ</span> (remainder 1).</p>
+                <p>Therefore <span class="math">N</span> is either prime or has a prime factor not in our list. Contradiction. ∎</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guarantee Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Guarantee Block</h3>
+          <span class="badge">guarantee_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::guarantee_block</span>{<span class="token-attr">#guar-prime</span>}
+<span class="token-slot">#property</span>
+If `isPrime(n)` returns `true`, then `n` has no
+divisors other than 1 and itself.
+
+<span class="token-slot">#conditions</span>
+- Input `n` must be a positive integer
+- `n` must be less than 2^53 (JS safe integer limit)
+
+<span class="token-slot">#evidence</span>
+Verified via exhaustive testing for n < 10^6 and
+probabilistic testing for larger values.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-guarantee">
+              <div class="vera-entity-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span class="entity-type">Guarantee</span>
+                <span class="entity-id">#guar-prime</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="property">
+                  If <code>isPrime(n)</code> returns <code>true</code>, then <code>n</code> has no divisors other than 1 and itself.
+                </div>
+                <div style="margin-top: 1rem;">
+                  <strong>Conditions:</strong>
+                  <ul style="margin: 0.5rem 0;">
+                    <li>Input <code>n</code> must be a positive integer</li>
+                    <li><code>n</code> must be less than 2⁵³ (JS safe integer limit)</li>
+                  </ul>
+                </div>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #10b981;">
+                  <strong>Evidence:</strong>
+                  <p style="margin: 0.5rem 0;">Verified via exhaustive testing for n < 10⁶ and probabilistic testing for larger values.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Operation Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Operation Block</h3>
+          <span class="badge">operation_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::operation_block</span>{<span class="token-attr">#op-check-prime</span>
+  <span class="token-attr">method</span>=<span class="token-string">"GET"</span>
+  <span class="token-attr">path</span>=<span class="token-string">"/api/primes/{n}"</span>}
+<span class="token-slot">#summary</span>
+Check if a number is prime.
+
+<span class="token-slot">#parameters</span>
+| Name | Type | Description |
+|------|------|-------------|
+| n | integer | The number to check |
+
+<span class="token-slot">#returns</span>
+`{ "isPrime": boolean, "factors": number[] }`
+
+<span class="token-slot">#errors</span>
+- `400` - Invalid input (not a positive integer)
+- `413` - Number too large (> 10^15)
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-operation">
+              <div class="vera-entity-header">
+                <span class="method-badge get">GET</span>
+                <span class="endpoint">/api/primes/{n}</span>
+              </div>
+              <div class="vera-entity-body">
+                <p style="margin: 0 0 1rem 0;"><strong>Check if a number is prime.</strong></p>
+                <div style="margin-bottom: 1rem;">
+                  <strong style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Parameters</strong>
+                  <table style="width: 100%; margin-top: 0.5rem; font-size: 0.875rem;">
+                    <tr style="background: var(--bg);">
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);"><code>n</code></td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">integer</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">The number to check</td>
+                    </tr>
+                  </table>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                  <strong style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Returns</strong>
+                  <code style="display: block; margin-top: 0.5rem; padding: 0.5rem; background: var(--bg-code); color: #86efac; border-radius: 4px;">{ "isPrime": boolean, "factors": number[] }</code>
+                </div>
+                <div>
+                  <strong style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Errors</strong>
+                  <ul style="margin: 0.5rem 0; font-size: 0.875rem;">
+                    <li><code style="color: #ef4444;">400</code> — Invalid input (not a positive integer)</li>
+                    <li><code style="color: #ef4444;">413</code> — Number too large (> 10¹⁵)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Exercise Block</h3>
+          <span class="badge">exercise_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::exercise</span>{<span class="token-attr">#ex-twin</span> <span class="token-attr">difficulty</span>=<span class="token-string">"intermediate"</span> <span class="token-attr">points</span>=<span class="token-string">15</span>}
+<span class="token-slot">#problem</span>
+Prove that for all twin prime pairs $(p, p+2)$
+where $p > 3$, the number $p + 1$ is divisible by 6.
+
+<span class="token-slot">#hints</span>
+- Consider the remainders when dividing by 2 and 3
+- Use the fact that p must be odd
+
+<span class="token-slot">#solution</span>
+Since $p > 3$ and prime, $p$ is odd, so $p+1$ is even.
+Since $p, p+1, p+2$ are consecutive and $p, p+2$ are
+prime (>3), neither is divisible by 3.
+Therefore $p+1$ must be divisible by 3.
+Since $p+1$ is divisible by both 2 and 3, it's divisible by 6. ∎
+
+<span class="token-slot">#rubric</span>
+- Identify p is odd (3 pts)
+- Divisibility by 2 argument (4 pts)
+- Divisibility by 3 argument (5 pts)
+- Complete proof (3 pts)
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-exercise">
+              <div class="vera-entity-header">
+                <span class="entity-type">Exercise</span>
+                <span class="entity-id">#ex-twin</span>
+                <span class="provenance-badge">intermediate</span>
+                <span class="points">15 pts</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="problem">
+                  <strong>Problem:</strong> Prove that for all twin prime pairs <span class="math">(p, p+2)</span> where <span class="math">p > 3</span>, the number <span class="math">p + 1</span> is divisible by 6.
+                </div>
+                <details style="margin: 0.75rem 0;">
+                  <summary style="cursor: pointer; color: #b45309; font-weight: 500;">Show Hints</summary>
+                  <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <li>Consider the remainders when dividing by 2 and 3</li>
+                    <li>Use the fact that p must be odd</li>
+                  </ul>
+                </details>
+                <details style="margin: 0.75rem 0;">
+                  <summary style="cursor: pointer; color: #b45309; font-weight: 500;">Show Solution</summary>
+                  <div style="margin-top: 0.5rem; padding: 0.75rem; background: white; border-radius: 6px;">
+                    <p>Since <span class="math">p > 3</span> and prime, <span class="math">p</span> is odd, so <span class="math">p+1</span> is even.</p>
+                    <p>Since <span class="math">p, p+1, p+2</span> are consecutive and <span class="math">p, p+2</span> are prime (>3), neither is divisible by 3. Therefore <span class="math">p+1</span> must be divisible by 3.</p>
+                    <p>Since <span class="math">p+1</span> is divisible by both 2 and 3, it's divisible by 6. ∎</p>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Profile Block</h3>
+          <span class="badge">profile_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::profile_block</span>{<span class="token-attr">#prof-euler</span> <span class="token-attr">name</span>=<span class="token-string">"Leonhard Euler"</span>}
+<span class="token-slot">#attributes</span>
+| Field | Value |
+|-------|-------|
+| Born | April 15, 1707 |
+| Died | September 18, 1783 |
+| Nationality | Swiss |
+| Fields | Mathematics, Physics |
+| Known for | Euler's identity, Graph theory |
+
+<span class="token-slot">#summary</span>
+One of the most prolific mathematicians in history,
+Euler made foundational contributions to number theory,
+including proving Fermat's Little Theorem.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-profile">
+              <div class="vera-entity-header">
+                <span class="profile-name">Leonhard Euler</span>
+              </div>
+              <div class="vera-entity-body" style="padding: 0;">
+                <table class="attributes-table">
+                  <tr><td>Born</td><td>April 15, 1707</td></tr>
+                  <tr><td>Died</td><td>September 18, 1783</td></tr>
+                  <tr><td>Nationality</td><td>Swiss</td></tr>
+                  <tr><td>Fields</td><td>Mathematics, Physics</td></tr>
+                  <tr><td>Known for</td><td>Euler's identity, Graph theory</td></tr>
+                </table>
+                <div style="padding: 1rem;">
+                  <p style="margin: 0; font-style: italic; color: var(--text-muted);">
+                    One of the most prolific mathematicians in history, Euler made foundational contributions to number theory, including proving Fermat's Little Theorem.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialogue Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Dialogue Block</h3>
+          <span class="badge">dialogue_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::dialogue_block</span>{<span class="token-attr">#dial-student</span> <span class="token-attr">speaker</span>=<span class="token-string">"Student"</span>}
+<span class="token-slot">#text</span>
+But professor, why can't 1 be prime?
+
+<span class="token-slot">#direction</span>
+puzzled, looking at the board
+<span class="token-directive">:::</span>
+
+<span class="token-directive">:::dialogue_block</span>{<span class="token-attr">#dial-prof</span> <span class="token-attr">speaker</span>=<span class="token-string">"Professor"</span>}
+<span class="token-slot">#text</span>
+If 1 were prime, the Fundamental Theorem of
+Arithmetic would fail—factorizations wouldn't
+be unique!
+
+<span class="token-slot">#direction</span>
+smiling, turns to face the class
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-dialogue">
+              <div class="speaker">Student</div>
+              <div class="direction">(puzzled, looking at the board)</div>
+              <p style="margin: 0.5rem 0 0 0;">"But professor, why can't 1 be prime?"</p>
+            </div>
+            <div class="vera-dialogue">
+              <div class="speaker">Professor</div>
+              <div class="direction">(smiling, turns to face the class)</div>
+              <p style="margin: 0.5rem 0 0 0;">"If 1 were prime, the Fundamental Theorem of Arithmetic would fail—factorizations wouldn't be unique!"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verse Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Verse Block</h3>
+          <span class="badge">verse_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::verse_block</span>{<span class="token-attr">#verse-primes</span>
+  <span class="token-attr">title</span>=<span class="token-string">"Ode to the Primes"</span>
+  <span class="token-attr">attribution</span>=<span class="token-string">"Anonymous Mathematician"</span>}
+<span class="token-slot">#stanzas</span>
+Two, the only even one,
+Three, where oddness has begun,
+Five and seven, standing tall,
+Eleven answers nature's call.
+
+Infinite in count they be,
+Each one indivisibly free,
+Building blocks of every sum,
+The primes march on, never done.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-verse">
+              <div class="title">Ode to the Primes</div>
+              <div class="stanza">
+Two, the only even one,
+Three, where oddness has begun,
+Five and seven, standing tall,
+Eleven answers nature's call.
+              </div>
+              <div class="stanza">
+Infinite in count they be,
+Each one indivisibly free,
+Building blocks of every sum,
+The primes march on, never done.
+              </div>
+              <div class="attribution">— Anonymous Mathematician</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Letter Block -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Letter Block</h3>
+          <span class="badge">letter_block</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::letter_block</span>{<span class="token-attr">#letter-fermat</span> <span class="token-attr">date</span>=<span class="token-string">"1640-10-18"</span>}
+<span class="token-slot">#salutation</span>
+Dear Monsieur de Carcavi,
+
+<span class="token-slot">#body</span>
+I have discovered a truly marvelous property
+concerning prime numbers. If $p$ is prime and
+$a$ is not divisible by $p$, then $a^{p-1} - 1$
+is always divisible by $p$.
+
+The proof is too long to include here, but I
+assure you it is most elegant.
+
+<span class="token-slot">#closing</span>
+Your humble servant,
+
+<span class="token-slot">#signature</span>
+Pierre de Fermat
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-letter">
+              <div class="date">October 18, 1640</div>
+              <div class="salutation">Dear Monsieur de Carcavi,</div>
+              <div class="body">
+                <p>I have discovered a truly marvelous property concerning prime numbers. If <span class="math">p</span> is prime and <span class="math">a</span> is not divisible by <span class="math">p</span>, then <span class="math">a<sup>p-1</sup> - 1</span> is always divisible by <span class="math">p</span>.</p>
+                <p>The proof is too long to include here, but I assure you it is most elegant.</p>
+              </div>
+              <div class="closing">Your humble servant,</div>
+              <div class="signature">Pierre de Fermat</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Additional Definitions Section -->
+    <section id="more-definitions">
+      <h2><span class="section-number">2.8</span> More Definition Types</h2>
+
+      <!-- Enum Def -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Enum Definition</h3>
+          <span class="badge">enum_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::enum_def</span>{<span class="token-attr">#enum-primetype</span> <span class="token-attr">defName</span>=<span class="token-string">"PrimeType"</span>}
+<span class="token-slot">#variants</span>
+- `Regular` - Standard prime (most primes)
+- `Twin` - Part of a twin prime pair
+- `Sophie` - Sophie Germain prime (p and 2p+1 both prime)
+- `Mersenne` - Of the form 2^n - 1
+- `Fermat` - Of the form 2^(2^n) + 1
+
+<span class="token-slot">#_description</span>
+Classification of prime numbers by special properties.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-enum">
+              <div class="vera-entity-header">
+                <span class="entity-type">Enum</span>
+                <span class="def-name">PrimeType</span>
+                <span class="entity-id">#enum-primetype</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="variant-list">
+                  <span class="variant">Regular</span>
+                  <span class="variant">Twin</span>
+                  <span class="variant">Sophie</span>
+                  <span class="variant">Mersenne</span>
+                  <span class="variant">Fermat</span>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                  Classification of prime numbers by special properties.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Function Def -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Function Definition</h3>
+          <span class="badge">function_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::function_def</span>{<span class="token-attr">#fn-pi</span>
+  <span class="token-attr">defName</span>=<span class="token-string">"π"</span>
+  <span class="token-attr">signature</span>=<span class="token-string">"ℕ → ℕ"</span>
+  <span class="token-attr">totality</span>=<span class="token-string">"total"</span>}
+<span class="token-slot">#_description</span>
+The prime-counting function. $\pi(n)$ returns the
+number of primes less than or equal to $n$.
+
+<span class="token-slot">#equations</span>
+π(1)  = 0
+π(2)  = 1
+π(10) = 4
+π(n)  = |{ p ∈ ℙ : p ≤ n }|
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-function">
+              <div class="vera-entity-header">
+                <span class="entity-type">Function</span>
+                <span class="def-name">π</span>
+                <span class="entity-id">#fn-pi</span>
+                <span class="provenance-badge">total</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="signature">π : ℕ → ℕ</div>
+                <p>The prime-counting function. <span class="math">π(n)</span> returns the number of primes less than or equal to <span class="math">n</span>.</p>
+                <div style="background: #f0fdf4; padding: 0.75rem; border-radius: 6px; font-family: monospace; font-size: 0.875rem;">
+                  π(1)  = 0<br>
+                  π(2)  = 1<br>
+                  π(10) = 4<br>
+                  π(n)  = |{ p ∈ ℙ : p ≤ n }|
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Predicate Def -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Predicate Definition</h3>
+          <span class="badge">predicate_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::predicate_def</span>{<span class="token-attr">#pred-coprime</span>
+  <span class="token-attr">defName</span>=<span class="token-string">"Coprime"</span>
+  <span class="token-attr">signature</span>=<span class="token-string">"(ℕ, ℕ) → Bool"</span>
+  <span class="token-attr">formula</span>=<span class="token-string">"gcd(a, b) = 1"</span>}
+<span class="token-slot">#_description</span>
+Two integers are coprime (relatively prime) if their
+greatest common divisor is 1. They share no prime factors.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-predicate">
+              <div class="vera-entity-header">
+                <span class="entity-type">Predicate</span>
+                <span class="def-name">Coprime</span>
+                <span class="entity-id">#pred-coprime</span>
+              </div>
+              <div class="vera-entity-body">
+                <div style="font-family: monospace; color: var(--text-muted); margin-bottom: 0.5rem;">
+                  Coprime : (ℕ, ℕ) → Bool
+                </div>
+                <div class="formula">gcd(a, b) = 1</div>
+                <p>Two integers are coprime (relatively prime) if their greatest common divisor is 1. They share no prime factors.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Axiom Def -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Axiom Definition</h3>
+          <span class="badge">axiom_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::axiom_def</span>{<span class="token-attr">#ax-wellordering</span>
+  <span class="token-attr">defName</span>=<span class="token-string">"Well-Ordering Principle"</span>
+  <span class="token-attr">statement</span>=<span class="token-string">"Every non-empty set of natural numbers has a least element"</span>
+  <span class="token-attr">formula</span>=<span class="token-string">"∀S ⊆ ℕ. S ≠ ∅ → ∃m ∈ S. ∀n ∈ S. m ≤ n"</span>}
+<span class="token-slot">#_description</span>
+This axiom is fundamental to proofs by infinite descent,
+often used in number theory to derive contradictions.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-axiom">
+              <div class="vera-entity-header">
+                <span class="entity-type">Axiom</span>
+                <span class="def-name">Well-Ordering Principle</span>
+                <span class="entity-id">#ax-wellordering</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="statement">
+                  Every non-empty set of natural numbers has a least element.
+                </div>
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px; text-align: center; font-family: 'Times New Roman', serif; font-size: 1.1rem;">
+                  ∀S ⊆ ℕ. S ≠ ∅ → ∃m ∈ S. ∀n ∈ S. m ≤ n
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">
+                  This axiom is fundamental to proofs by infinite descent, often used in number theory to derive contradictions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule Def -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Rule Definition</h3>
+          <span class="badge">rule_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::rule_def</span>{<span class="token-attr">#rule-div-trans</span>
+  <span class="token-attr">defName</span>=<span class="token-string">"Divisibility Transitivity"</span>
+  <span class="token-attr">label</span>=<span class="token-string">"DIV-TRANS"</span>}
+<span class="token-slot">#premises</span>
+- $a \mid b$ (a divides b)
+- $b \mid c$ (b divides c)
+
+<span class="token-slot">#conclusion</span>
+$a \mid c$
+
+<span class="token-slot">#_description</span>
+Divisibility is a transitive relation on integers.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-rule">
+              <div class="vera-entity-header">
+                <span class="entity-type">Rule</span>
+                <span class="def-name">Divisibility Transitivity</span>
+                <span class="provenance-badge">DIV-TRANS</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="inference">
+                  <div class="premises">
+                    <span class="math">a | b</span> &nbsp;&nbsp;&nbsp; <span class="math">b | c</span>
+                  </div>
+                  <div class="rule-line"></div>
+                  <div class="conclusion">
+                    <span class="math">a | c</span>
+                  </div>
+                </div>
+                <p style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                  Divisibility is a transitive relation on integers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grammar Def -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Grammar Definition</h3>
+          <span class="badge">grammar_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::grammar_def</span>{<span class="token-attr">#gram-arith</span>
+  <span class="token-attr">defName</span>=<span class="token-string">"ArithExpr"</span>
+  <span class="token-attr">startSymbol</span>=<span class="token-string">"Expr"</span>}
+<span class="token-slot">#productions</span>
+Expr   ::= Term (('+' | '-') Term)*
+Term   ::= Factor (('*' | '/') Factor)*
+Factor ::= Number | '(' Expr ')' | 'prime(' Expr ')'
+Number ::= [0-9]+
+
+<span class="token-slot">#_description</span>
+Grammar for arithmetic expressions with a `prime(n)`
+predicate that evaluates to 1 if n is prime, 0 otherwise.
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-grammar">
+              <div class="vera-entity-header">
+                <span class="entity-type">Grammar</span>
+                <span class="def-name">ArithExpr</span>
+                <span class="entity-id">#gram-arith</span>
+                <span class="provenance-badge">start: Expr</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="productions">Expr   ::= Term (('+' | '-') Term)*
+Term   ::= Factor (('*' | '/') Factor)*
+Factor ::= Number | '(' Expr ')' | 'prime(' Expr ')'
+Number ::= [0-9]+</div>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">
+                  Grammar for arithmetic expressions with a <code>prime(n)</code> predicate that evaluates to 1 if n is prime, 0 otherwise.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Judgment Def -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Judgment Definition</h3>
+          <span class="badge">judgment_def</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::judgment_def</span>{<span class="token-attr">#judg-divides</span>
+  <span class="token-attr">defName</span>=<span class="token-string">"Divides"</span>
+  <span class="token-attr">form</span>=<span class="token-string">"n ⊢ m ÷ k"</span>}
+<span class="token-slot">#_description</span>
+The judgment $n \vdash m \div k$ asserts that under
+context $n$, the value $m$ is divisible by $k$.
+
+<span class="token-slot">#rules</span>
+| Rule | Premises | Conclusion |
+|------|----------|------------|
+| DIV-REFL | — | n ⊢ k ÷ k |
+| DIV-MULT | n ⊢ m ÷ k | n ⊢ (m·j) ÷ k |
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-judgment">
+              <div class="vera-entity-header">
+                <span class="entity-type">Judgment</span>
+                <span class="def-name">Divides</span>
+                <span class="entity-id">#judg-divides</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="form">n ⊢ m ÷ k</div>
+                <p>The judgment <span class="math">n ⊢ m ÷ k</span> asserts that under context <span class="math">n</span>, the value <span class="math">m</span> is divisible by <span class="math">k</span>.</p>
+                <table style="width: 100%; margin-top: 1rem; font-size: 0.875rem; border-collapse: collapse;">
+                  <thead>
+                    <tr style="background: var(--bg);">
+                      <th style="padding: 0.5rem; border: 1px solid var(--border);">Rule</th>
+                      <th style="padding: 0.5rem; border: 1px solid var(--border);">Premises</th>
+                      <th style="padding: 0.5rem; border: 1px solid var(--border);">Conclusion</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">DIV-REFL</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">—</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">n ⊢ k ÷ k</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border); font-weight: 600;">DIV-MULT</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">n ⊢ m ÷ k</td>
+                      <td style="padding: 0.5rem; border: 1px solid var(--border);">n ⊢ (m·j) ÷ k</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Supporting Directives Section -->
+    <section id="supporting-directives">
+      <h2><span class="section-number">2.9</span> Supporting Directives</h2>
+
+      <p>Supporting directives nest within parent entities and cannot appear at document root.</p>
+
+      <!-- Proof Step -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Proof Step</h3>
+          <span class="badge">proof_step</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-sqrt2</span> <span class="token-attr">variant</span>=<span class="token-string">"theorem"</span>}
+<span class="token-slot">#statement</span>
+$\sqrt{2}$ is irrational.
+
+<span class="token-slot">#proof</span>
+<span class="token-directive">:::proof_step</span>{<span class="token-attr">#step-assume</span> <span class="token-attr">method</span>=<span class="token-string">"contradiction"</span>}
+Assume $\sqrt{2} = a/b$ in lowest terms.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::proof_step</span>{<span class="token-attr">#step-square</span> <span class="token-attr">method</span>=<span class="token-string">"direct"</span>}
+Then $2b^2 = a^2$, so $a^2$ is even.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::proof_step</span>{<span class="token-attr">#step-aeven</span> <span class="token-attr">justification</span>=<span class="token-string">"Even square → even root"</span>}
+Therefore $a$ is even. Let $a = 2k$.
+<span class="token-directive">:::</span>
+<span class="token-directive">:::proof_step</span>{<span class="token-attr">#step-contra</span> <span class="token-attr">method</span>=<span class="token-string">"contradiction"</span>}
+Then $b^2 = 2k^2$, so $b$ is also even.
+But $a/b$ was in lowest terms. Contradiction. ∎
+<span class="token-directive">:::</span>
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-theorem">
+              <div class="vera-entity-header">
+                <span class="entity-type">Theorem</span>
+                <span class="entity-id">#thm-sqrt2</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="statement">
+                  <span class="math">√2</span> is irrational.
+                </div>
+                <div class="proof">
+                  <span class="proof-label">Proof.</span>
+                  <div class="vera-proof-step">
+                    <div class="step-number">1</div>
+                    <div>
+                      <div class="step-method">contradiction</div>
+                      <p style="margin: 0.25rem 0 0 0;">Assume <span class="math">√2 = a/b</span> in lowest terms.</p>
+                    </div>
+                  </div>
+                  <div class="vera-proof-step">
+                    <div class="step-number">2</div>
+                    <div>
+                      <div class="step-method">direct</div>
+                      <p style="margin: 0.25rem 0 0 0;">Then <span class="math">2b² = a²</span>, so <span class="math">a²</span> is even.</p>
+                    </div>
+                  </div>
+                  <div class="vera-proof-step">
+                    <div class="step-number">3</div>
+                    <div>
+                      <div class="step-method" style="color: var(--text-muted); font-style: italic;">Even square → even root</div>
+                      <p style="margin: 0.25rem 0 0 0;">Therefore <span class="math">a</span> is even. Let <span class="math">a = 2k</span>.</p>
+                    </div>
+                  </div>
+                  <div class="vera-proof-step">
+                    <div class="step-number">4</div>
+                    <div>
+                      <div class="step-method">contradiction</div>
+                      <p style="margin: 0.25rem 0 0 0;">Then <span class="math">b² = 2k²</span>, so <span class="math">b</span> is also even. But <span class="math">a/b</span> was in lowest terms. Contradiction. ∎</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Provenance Section -->
+    <section id="provenance">
+      <h2><span class="section-number">2.10</span> Provenance Tracking</h2>
+
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <h3>Entity with Full Provenance</h3>
+          <span class="badge">provenance</span>
+        </div>
+        <div class="demo-content">
+          <div class="demo-source">
+            <div class="demo-source-label">Source</div>
+            <pre><code><span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-extracted</span>
+  <span class="token-attr">variant</span>=<span class="token-string">"theorem"</span>
+  <span class="token-attr">sourceLoc</span>=<span class="token-string">"p.127-128"</span>
+  <span class="token-attr">confidence</span>=<span class="token-string">0.92</span>
+  <span class="token-attr">verified</span>=<span class="token-string">true</span>
+  <span class="token-attr">derivedFrom</span>=<span class="token-string">"#thm-original"</span>}
+<span class="token-slot">#statement</span>
+The sum of the first $n$ primes exceeds
+$\frac{n^2 \ln n}{2}$ for $n \geq 17$.
+
+<span class="token-slot">#_provenance</span>
+| Aspect | Detail |
+|--------|--------|
+| **Source** | [Hardy 1979](#ref-hardy), pp. 127-128 |
+| **Extraction** | OCR via Mathpix, confidence 0.92 |
+| **Manual correction** | Typo in exponent fixed |
+| **Verified** | @alice, 2025-01-15 |
+<span class="token-directive">:::</span></code></pre>
+          </div>
+          <div class="demo-rendered">
+            <div class="demo-rendered-label">Rendered</div>
+            <div class="vera-entity vera-theorem">
+              <div class="vera-entity-header">
+                <span class="entity-type">Theorem</span>
+                <span class="entity-id">#thm-extracted</span>
+                <span class="provenance-badge verified">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  verified
+                </span>
+                <span class="provenance-badge">
+                  <span class="confidence-bar"><span class="fill" style="width: 92%"></span></span>
+                  92%
+                </span>
+                <span class="provenance-badge">p.127-128</span>
+              </div>
+              <div class="vera-entity-body">
+                <div class="statement">
+                  The sum of the first <span class="math">n</span> primes exceeds <span class="math">n²ln(n)/2</span> for <span class="math">n ≥ 17</span>.
+                </div>
+                <details style="margin-top: 1rem;">
+                  <summary style="cursor: pointer; color: var(--text-muted); font-size: 0.875rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    View Provenance
+                  </summary>
+                  <div style="margin-top: 0.75rem; padding: 0.75rem; background: var(--bg-alt); border-radius: 6px; font-size: 0.875rem;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                      <tr><td style="padding: 0.25rem 0.5rem; font-weight: 600;">Source</td><td style="padding: 0.25rem 0.5rem;"><a href="#ref-hardy">Hardy 1979</a>, pp. 127-128</td></tr>
+                      <tr><td style="padding: 0.25rem 0.5rem; font-weight: 600;">Extraction</td><td style="padding: 0.25rem 0.5rem;">OCR via Mathpix, confidence 0.92</td></tr>
+                      <tr><td style="padding: 0.25rem 0.5rem; font-weight: 600;">Manual correction</td><td style="padding: 0.25rem 0.5rem;">Typo in exponent fixed</td></tr>
+                      <tr><td style="padding: 0.25rem 0.5rem; font-weight: 600;">Verified</td><td style="padding: 0.25rem 0.5rem;">@alice, 2025-01-15</td></tr>
+                    </table>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ID System and Cross-References Section -->
+  <section id="id-system">
+    <h1><span class="section-number">3</span> ID System &amp; Cross-References</h1>
+
+    <p>VERA uses a robust identity system that enables stable references within and across documents. Every entity has a unique identifier, and the system supports human-readable aliases for authoring convenience.</p>
+
+    <!-- ID Types -->
+    <div class="demo-panel">
+      <div class="demo-panel-header">
+        <h3>Identity Hierarchy</h3>
+        <span class="badge">id_system</span>
+      </div>
+      <div class="demo-content">
+        <div class="demo-source">
+          <div class="demo-source-label">Source</div>
+          <pre><code><span class="token-comment">--- YAML Frontmatter ---</span>
+<span class="token-attr">documentId</span>: <span class="token-string">V1StGXR8_Z5jdHi6B-myT</span>  <span class="token-comment"># 21-char NanoID</span>
+
+<span class="token-comment">--- Entity with IDs ---</span>
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm_k9s8a2</span> <span class="token-attr">alias</span>=<span class="token-string">"fundamental-theorem"</span>}
+...
+<span class="token-directive">:::</span>
+
+<span class="token-comment">--- Reference Syntax ---</span>
+See [Theorem 1](#fundamental-theorem)         <span class="token-comment"># by alias</span>
+See [Theorem 1](#thm_k9s8a2)                  <span class="token-comment"># by localId</span>
+See [Theorem 1](doc:V1StGXR8...#thm_k9s8a2)  <span class="token-comment"># cross-doc</span></code></pre>
+        </div>
+        <div class="demo-rendered">
+          <div class="demo-rendered-label">ID Types</div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+            <thead>
+              <tr style="background: var(--bg-alt);">
+                <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">ID Type</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Scope</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Format</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);"><code>documentId</code></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Global</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">NanoID, 21 chars</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);"><code>V1StGXR8_Z5jdHi6B-myT</code></td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);"><code>localId</code></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Document</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">6-12 chars, optional prefix</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);"><code>thm_k9s8a2</code></td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);"><code>alias</code></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Document</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">kebab-case</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);"><code>fundamental-theorem</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top: 1rem; padding: 1rem; background: var(--theorem-bg); border-radius: 6px; border-left: 4px solid var(--theorem-border);">
+            <strong>Key Principle:</strong> <code>localId</code> is immutable (never changes after creation). <code>alias</code> is mutable (can be renamed without breaking references).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cross-Document References -->
+    <div class="demo-panel">
+      <div class="demo-panel-header">
+        <h3>Cross-Document References</h3>
+        <span class="badge">refs</span>
+      </div>
+      <div class="demo-content">
+        <div class="demo-source">
+          <div class="demo-source-label">Source</div>
+          <pre><code><span class="token-comment"># Document A: algebra.vera.md</span>
+<span class="token-attr">documentId</span>: <span class="token-string">abc123...</span>
+
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-group</span> <span class="token-attr">alias</span>=<span class="token-string">"group-axioms"</span>}
+<span class="token-slot">#statement</span>
+A group is a set G with operation · satisfying...
+<span class="token-directive">:::</span>
+
+<span class="token-comment"># Document B: number-theory.vera.md</span>
+<span class="token-attr">documentId</span>: <span class="token-string">xyz789...</span>
+
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-prime-group</span>
+  <span class="token-attr">refs</span>=<span class="token-string">"doc:abc123...#group-axioms"</span>}
+<span class="token-slot">#statement</span>
+The multiplicative group of integers modulo p is cyclic.
+
+<span class="token-slot">#_content</span>
+This theorem builds on the [group axioms](doc:abc123...#group-axioms)
+defined in the algebra document.
+<span class="token-directive">:::</span></code></pre>
+        </div>
+        <div class="demo-rendered">
+          <div class="demo-rendered-label">Reference Resolution</div>
+          <div style="padding: 1rem; background: var(--bg-alt); border-radius: 8px;">
+            <h4 style="margin: 0 0 1rem 0; font-size: 1rem;">Resolution Order</h4>
+            <ol style="margin: 0; padding-left: 1.5rem;">
+              <li style="margin-bottom: 0.5rem;"><strong>Exact match on <code>localId</code></strong> — <code>#thm_k9s8a2</code></li>
+              <li style="margin-bottom: 0.5rem;"><strong>Exact match on <code>alias</code></strong> — <code>#fundamental-theorem</code></li>
+              <li style="margin-bottom: 0.5rem;"><strong>Cross-document</strong> — <code>doc:documentId#target</code></li>
+            </ol>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <h4 style="margin: 0 0 1rem 0; font-size: 1rem;">Reference Graph</h4>
+            <svg width="100%" height="180" viewBox="0 0 500 180" style="font-family: sans-serif; font-size: 12px;">
+              <!-- Document A -->
+              <rect x="20" y="20" width="200" height="140" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+              <text x="120" y="45" text-anchor="middle" font-weight="bold" fill="#1d4ed8">algebra.vera.md</text>
+              <text x="40" y="65" font-size="10" fill="#64748b">documentId: abc123...</text>
+
+              <rect x="40" y="80" width="160" height="60" rx="4" fill="white" stroke="#3b82f6"/>
+              <text x="50" y="100" font-weight="600" fill="#1e293b">#thm-group</text>
+              <text x="50" y="118" font-size="10" fill="#64748b">alias: group-axioms</text>
+              <text x="50" y="132" font-size="10" fill="#64748b">Group axioms...</text>
+
+              <!-- Document B -->
+              <rect x="280" y="20" width="200" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+              <text x="380" y="45" text-anchor="middle" font-weight="bold" fill="#166534">number-theory.vera.md</text>
+              <text x="300" y="65" font-size="10" fill="#64748b">documentId: xyz789...</text>
+
+              <rect x="300" y="80" width="160" height="60" rx="4" fill="white" stroke="#22c55e"/>
+              <text x="310" y="100" font-weight="600" fill="#1e293b">#thm-prime-group</text>
+              <text x="310" y="118" font-size="10" fill="#64748b">refs: doc:abc123...#group-axioms</text>
+              <text x="310" y="132" font-size="10" fill="#64748b">Cyclic group theorem...</text>
+
+              <!-- Arrow -->
+              <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+                </marker>
+              </defs>
+              <line x1="300" y1="110" x2="210" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,3"/>
+              <text x="255" y="100" text-anchor="middle" font-size="10" fill="#64748b">refs</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Derivation Chains -->
+    <div class="demo-panel">
+      <div class="demo-panel-header">
+        <h3>Derivation Chains</h3>
+        <span class="badge">derivedFrom</span>
+      </div>
+      <div class="demo-content">
+        <div class="demo-source">
+          <div class="demo-source-label">Source</div>
+          <pre><code><span class="token-comment"># Original extraction from PDF</span>
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-original</span>
+  <span class="token-attr">sourceLoc</span>=<span class="token-string">"p.42"</span>
+  <span class="token-attr">confidence</span>=<span class="token-string">0.85</span>}
+<span class="token-slot">#statement</span>
+[OCR'd text with some errors...]
+<span class="token-directive">:::</span>
+
+<span class="token-comment"># Corrected version</span>
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-corrected</span>
+  <span class="token-attr">derivedFrom</span>=<span class="token-string">"#thm-original"</span>
+  <span class="token-attr">confidence</span>=<span class="token-string">0.98</span>}
+<span class="token-slot">#statement</span>
+[Manually corrected text...]
+<span class="token-directive">:::</span>
+
+<span class="token-comment"># Simplified for students</span>
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm-simplified</span>
+  <span class="token-attr">derivedFrom</span>=<span class="token-string">"#thm-corrected"</span>}
+<span class="token-slot">#statement</span>
+[Simplified version...]
+<span class="token-directive">:::</span></code></pre>
+        </div>
+        <div class="demo-rendered">
+          <div class="demo-rendered-label">Derivation Graph</div>
+          <div style="padding: 1rem;">
+            <svg width="100%" height="200" viewBox="0 0 500 200" style="font-family: sans-serif; font-size: 12px;">
+              <!-- Source PDF -->
+              <rect x="20" y="80" width="100" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+              <text x="70" y="100" text-anchor="middle" font-size="11" fill="#991b1b">source.pdf</text>
+              <text x="70" y="118" text-anchor="middle" font-size="10" fill="#b91c1c">p.42</text>
+
+              <!-- Original -->
+              <rect x="160" y="80" width="100" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+              <text x="210" y="100" text-anchor="middle" font-size="11" font-weight="600">#thm-original</text>
+              <text x="210" y="118" text-anchor="middle" font-size="10" fill="#b45309">85% conf</text>
+
+              <!-- Corrected -->
+              <rect x="300" y="80" width="100" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+              <text x="350" y="100" text-anchor="middle" font-size="11" font-weight="600">#thm-corrected</text>
+              <text x="350" y="118" text-anchor="middle" font-size="10" fill="#166534">98% conf</text>
+
+              <!-- Simplified -->
+              <rect x="300" y="150" width="100" height="40" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+              <text x="350" y="175" text-anchor="middle" font-size="11" font-weight="600">#thm-simplified</text>
+
+              <!-- Arrows -->
+              <defs>
+                <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+                </marker>
+              </defs>
+              <line x1="120" y1="105" x2="155" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+              <text x="137" y="95" text-anchor="middle" font-size="9" fill="#64748b">OCR</text>
+
+              <line x1="260" y1="105" x2="295" y2="105" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+              <text x="277" y="95" text-anchor="middle" font-size="9" fill="#64748b">corrected</text>
+
+              <line x1="350" y1="130" x2="350" y2="145" stroke="#64748b" stroke-width="2" marker-end="url(#arrow2)"/>
+              <text x="375" y="140" font-size="9" fill="#64748b">simplified</text>
+            </svg>
+
+            <div style="margin-top: 1rem; padding: 1rem; background: var(--definition-bg); border-radius: 6px; border-left: 4px solid var(--definition-border);">
+              <strong>Derivation Types:</strong> <code>extracted</code>, <code>corrected</code>, <code>simplified</code>, <code>translated</code>, <code>summarized</code>, <code>merged</code>, <code>split</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ID Uniqueness Rules -->
+    <div class="demo-panel">
+      <div class="demo-panel-header">
+        <h3>Uniqueness &amp; Collision Rules</h3>
+        <span class="badge">validation</span>
+      </div>
+      <div class="demo-content">
+        <div class="demo-source">
+          <div class="demo-source-label">Rules</div>
+          <pre><code><span class="token-comment"># ✓ Valid: Different IDs, different aliases</span>
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm_a1b2c3</span> <span class="token-attr">alias</span>=<span class="token-string">"main-theorem"</span>}
+<span class="token-directive">:::lemma</span>{<span class="token-attr">#lem_d4e5f6</span> <span class="token-attr">alias</span>=<span class="token-string">"helper-lemma"</span>}
+
+<span class="token-comment"># ✗ Invalid: Duplicate localId</span>
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#thm_same</span>}
+<span class="token-directive">:::lemma</span>{<span class="token-attr">#thm_same</span|}  <span class="token-comment"># ERROR!</span>
+
+<span class="token-comment"># ✗ Invalid: Alias collides with localId</span>
+<span class="token-directive">:::theorem</span>{<span class="token-attr">#main-result</span|}
+<span class="token-directive">:::lemma</span>{<span class="token-attr">#lem_xyz</span> <span class="token-attr">alias</span>=<span class="token-string">"main-result"</span|}  <span class="token-comment"># ERROR!</span>
+
+<span class="token-comment"># ✓ Valid alias formats</span>
+main-theorem      <span class="token-comment"># lowercase kebab</span>
+theorem-2-1       <span class="token-comment"># numbers allowed</span>
+
+<span class="token-comment"># ✗ Invalid alias formats</span>
+Main-Theorem      <span class="token-comment"># no uppercase</span>
+main_theorem      <span class="token-comment"># no underscores</span>
+main theorem      <span class="token-comment"># no spaces</span></code></pre>
+        </div>
+        <div class="demo-rendered">
+          <div class="demo-rendered-label">Validation Rules</div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+            <thead>
+              <tr style="background: var(--bg-alt);">
+                <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Rule</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Scope</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--border); text-align: left;">Error</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">No duplicate <code>localId</code></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Within document</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border); color: #dc2626;">Reject document</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">No duplicate <code>alias</code></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Within document</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border); color: #dc2626;">Reject document</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);"><code>alias</code> ≠ any <code>localId</code></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Within document</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border); color: #dc2626;">Reject document</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">No cyclic <code>derivedFrom</code></td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">All references</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border); color: #dc2626;">Reject document</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Unresolved reference</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border);">Configurable</td>
+                <td style="padding: 0.75rem; border: 1px solid var(--border); color: #b45309;">Warning (Deferred mode)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 1rem; padding: 1rem; background: #fef3c7; border-radius: 6px; border-left: 4px solid #f59e0b;">
+            <strong>Incremental Extraction:</strong> Forward references are allowed during extraction. Use <code>placeholder=true</code> for expected-but-not-yet-extracted entities, and resolve after all documents are processed.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Summary -->
+  <section id="summary">
+    <h1><span class="section-number">4</span> Entity Summary</h1>
+
+    <p>This demo showcases all 35 entity types defined in the VERA specification.</p>
+
+    <div class="vera-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Count</th>
+            <th>Entities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Content Blocks</strong></td>
+            <td>21</td>
+            <td>section, figure, table, result, diagram, code, comparison, abstract, theorem, proof, guarantee, operation, example, exercise, profile, admonition, quote, dialogue, verse, letter, timeline</td>
+          </tr>
+          <tr>
+            <td><strong>Definitions</strong></td>
+            <td>11</td>
+            <td>type, enum, function, predicate, notation, term, axiom, rule, grammar, judgment, reference</td>
+          </tr>
+          <tr>
+            <td><strong>Supporting</strong></td>
+            <td>3</td>
+            <td>proof_step, event, hint</td>
+          </tr>
+          <tr style="background: var(--bg-alt); font-weight: 600;">
+            <td>Total</td>
+            <td colspan="2">35 entity types — all demonstrated above</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 12px; border: 1px solid #3b82f6;">
+      <h3 style="margin: 0 0 1rem 0; color: #1d4ed8;">Entity Checklist</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.875rem;">
+        <div>✓ section_block</div>
+        <div>✓ figure_block</div>
+        <div>✓ table_block</div>
+        <div>✓ result_block</div>
+        <div>✓ diagram_block</div>
+        <div>✓ code_block</div>
+        <div>✓ comparison_block</div>
+        <div>✓ abstract_block</div>
+        <div>✓ theorem_block</div>
+        <div>✓ proof_block</div>
+        <div>✓ guarantee_block</div>
+        <div>✓ operation_block</div>
+        <div>✓ example_block</div>
+        <div>✓ exercise_block</div>
+        <div>✓ profile_block</div>
+        <div>✓ admonition_block</div>
+        <div>✓ quote_block</div>
+        <div>✓ dialogue_block</div>
+        <div>✓ verse_block</div>
+        <div>✓ letter_block</div>
+        <div>✓ timeline_block</div>
+        <div>✓ type_def</div>
+        <div>✓ enum_def</div>
+        <div>✓ function_def</div>
+        <div>✓ predicate_def</div>
+        <div>✓ notation_def</div>
+        <div>✓ term_def</div>
+        <div>✓ axiom_def</div>
+        <div>✓ rule_def</div>
+        <div>✓ grammar_def</div>
+        <div>✓ judgment_def</div>
+        <div>✓ reference_def</div>
+        <div>✓ proof_step</div>
+        <div>✓ event</div>
+        <div>✓ hint</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="document-footer">
+    <p>VERA Specification RFC v0.9.2 — Rendered Demo</p>
+    <p>This HTML demonstrates how VERA entities appear when rendered from Markdown with directives.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
